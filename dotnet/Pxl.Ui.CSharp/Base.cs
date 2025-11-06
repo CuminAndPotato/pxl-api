@@ -1,10 +1,6 @@
 ﻿namespace Pxl.Ui;
 
-using System.Collections;
-using System.Collections.Concurrent;
-using Microsoft.FSharp.Core;
 using Pxl;
-using Unit = Microsoft.FSharp.Core.Unit;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class BuilderStyleAttribute : Attribute { public BuilderStyleAttribute() { } }

@@ -1,9 +1,9 @@
 
-// #r "nuget: Pxl, 0.0.11"
+#r "nuget: Pxl, 0.0.11"
 
-#r "../Pxl/bin/Debug/net8.0/Pxl.dll"
-#r "../Pxl.Ui/bin/Debug/net8.0/Pxl.Ui.dll"
-#r "../Pxl/bin/Debug/net8.0/Pxl.Ui.CSharp.dll"
+// #r "../Pxl/bin/Debug/net8.0/Pxl.dll"
+// #r "../Pxl.Ui/bin/Debug/net8.0/Pxl.Ui.dll"
+// #r "../Pxl.Ui.CSharp/bin/Debug/net8.0/Pxl.Ui.CSharp.dll"
 
 using Pxl;
 using Pxl.Ui;

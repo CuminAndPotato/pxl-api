@@ -39,7 +39,7 @@
         <Compile Include="Ui/Anim.fs" />
         <Compile Include="Ui/Text.fs" />
         <Compile Include="Evaluation.fs" />
-        <Compile Include="PxlLocalDevShadow.fs" />
+        <Compile Include="PxlLocalDev.fs" />
     </ItemGroup>
 
     <ItemGroup>

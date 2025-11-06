@@ -1,5 +1,5 @@
 [<AutoOpen>]
-module Pxl.PxlLocalDevShadow
+module Pxl.PxlLocalDev
 
 open System
 open System.IO
