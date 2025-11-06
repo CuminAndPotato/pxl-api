@@ -1,4 +1,4 @@
-#I "../.pxlLocalDev/Pxl"
+#I "../.pxlLocalDev"
 
 #r "SkiaSharp.dll"
 #r "Pxl.dll"
@@ -6,29 +6,21 @@
 #r "Pxl.Ui.CSharp.dll"
 
 open Pxl
+open Pxl.Ui
 
 
 
-let scene = fun () ->
-    for frame in Pxl.Ui.Scene.Frames do
-        // draw something
-        printfn $"Frame NOW = {frame.now}"
+let myScene = fun (ctx: RenderCtx) ->
+    ctx.DrawLine(0, 0, ctx.width, ctx.height) |> ignore
+    ()
 
 
+let videScene =
+    scene {
+        let! ctx = getCtx ()
+        do myScene ctx
+    }
 
 
-// eigentlich muss das gemacht werden, was der Simulator macht
-let canvas = CanvasProxy.createWithDefaults "localhost" id
+videScene |> Simulator.start "localhost"
 
-Pxl.Evaluation.startCSharp(
-    canvas,
-    RenderCtx(canvas.Metadata.width, canvas.Metadata.height, canvas.Metadata.fps),
-    (fun ex ->
-        // TODO: retry
-        printfn $"Error in evaluating App logic: {ex.Message}"
-        
-    ),
-    Reality.forRealTime (),
-    (fun () -> { lowerButtonPressed = false; upperButtonPressed = false }),
-    scene
-    )
