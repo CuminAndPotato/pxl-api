@@ -10,17 +10,12 @@ open Pxl.Ui
 
 
 
-let myScene = fun (ctx: RenderCtx) ->
-    ctx.DrawLine(0, 0, ctx.width, ctx.height) |> ignore
+let myScene = fun () ->
+    Pxl.DrawLine(0, 0, Pxl.width, Pxl.height) |> ignore
     ()
 
 
-let videScene =
-    scene {
-        let! ctx = getCtx ()
-        do myScene ctx
-    }
 
+myScene |> Simulator.startWith "localhost"
 
-videScene |> Simulator.start "localhost"
 

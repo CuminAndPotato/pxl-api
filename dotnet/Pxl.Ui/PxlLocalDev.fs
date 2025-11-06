@@ -5,20 +5,7 @@ open System
 open System.IO
 open System.Reflection
 
-let mutable private _isFsi = None
-
-// This seems like a HACK - it propably is. But it works.
-let private isFsi () =
-    match _isFsi with
-    | Some x -> x
-    | None ->
-        let isFsi =
-            AppDomain.CurrentDomain.GetAssemblies()
-            |> Array.map (fun asm -> asm.GetName().Name)
-            |> Array.exists (fun asmName -> asmName.StartsWith("FSI-ASSEMBLY", StringComparison.Ordinal))
-        _isFsi <- Some isFsi
-        isFsi
-
+let mutable isInInteractiveContext = true
 
 [<RequireQualifiedAccess>]
 module Asset =
@@ -44,7 +31,7 @@ module Asset =
 
     /// This function must only called from the assembly that contains the assets.
     let load (sourceDir: string, assetName: string) =
-        if isFsi() then
+        if isInInteractiveContext then
             let path = Path.Combine(sourceDir, "assets", assetName)
             let content = File.ReadAllBytes(path)
             new MemoryStream(content) :> Stream
@@ -57,7 +44,7 @@ module Asset =
 module Image =
 
     let internal load (sourceDir: string) (assetName: string) f =
-        if isFsi() then
+        if isInInteractiveContext then
             Asset.load(sourceDir, assetName)
             |> f
         else
@@ -95,7 +82,7 @@ module Simulator =
         |}
 
     let startEx (createCanvas: (unit -> unit) -> Canvas) scene =
-        if isFsi() then
+        if isInInteractiveContext then
             let mutable retry = true
 
             let rec reStart () =
@@ -137,7 +124,13 @@ module Simulator =
     let start (receiver: string) scene =
         scene |> startEx (CanvasProxy.createWithDefaults receiver)
 
+    let startWith (receiver: string) (sceneFunc: Action) =
+        let scene = scene { do sceneFunc.Invoke() }
+        scene |> startEx (CanvasProxy.createWithDefaults receiver)
+        Console.WriteLine("Simulator started. Press any key to exit...");
+        Console.ReadKey() |> ignore
+
     let stop () =
-        if isFsi()
+        if isInInteractiveContext
         then stopInternal.invoke()
         else ()

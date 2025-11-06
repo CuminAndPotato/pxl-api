@@ -9,6 +9,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pxl", "Pxl\Pxl.fsproj", "{E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pxl.Ui.CSharp", "Pxl.Ui.CSharp\Pxl.Ui.CSharp.csproj", "{1E1EC7C5-7FB7-44D1-854A-C7A5A1E3B5D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPxlApp", "MyPxlApp\MyPxlApp.csproj", "{294BA7A5-64FF-4584-BE00-9C9C068C17B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{1E1EC7C5-7FB7-44D1-854A-C7A5A1E3B5D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E1EC7C5-7FB7-44D1-854A-C7A5A1E3B5D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E1EC7C5-7FB7-44D1-854A-C7A5A1E3B5D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{294BA7A5-64FF-4584-BE00-9C9C068C17B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{294BA7A5-64FF-4584-BE00-9C9C068C17B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{294BA7A5-64FF-4584-BE00-9C9C068C17B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{294BA7A5-64FF-4584-BE00-9C9C068C17B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,6 +4,8 @@ open SkiaSharp
 open Pxl
 open System
 open System.Runtime.InteropServices
+open System.Collections.Generic
+open System.Threading
 
 type Buttons =
     {
@@ -29,6 +31,9 @@ type IDirectDrawable =
 // we use this to provide extensions like line, pxl, etc.
 and DrawEntry(ctx: RenderCtx) =
     member _.Ctx = ctx
+
+and RenderCtxInstances =
+    static member val internal RenderContexts = Dictionary<int, RenderCtx>()
 
 and [<Sealed>] RenderCtx
     (
@@ -67,7 +72,7 @@ and [<Sealed>] RenderCtx
     member _.canvas = _skCanvas
     member _.buttons = _buttons
 
-    member internal _.PrepareCycle(startTime: DateTimeOffset, now: DateTimeOffset, buttons: Buttons) =
+    member internal this.PrepareCycle(startTime: DateTimeOffset, now: DateTimeOffset, buttons: Buttons) =
         _startTime <- startTime
         _now <- now
         _buttons <- buttons
@@ -75,6 +80,7 @@ and [<Sealed>] RenderCtx
             _skCanvas.Clear(SKColors.Black)
         _clear <- defaultClearBackground
         _skCanvas.ResetMatrix()
+        RenderCtxInstances.RenderContexts[Thread.CurrentThread.ManagedThreadId] <- this
 
     member this.BeginDirectDrawable(directDrawable: 'a when 'a :> IDirectDrawable) : 'a =
         this.EndDirectDrawable()
