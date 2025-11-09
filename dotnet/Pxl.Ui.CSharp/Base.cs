@@ -1,4 +1,4 @@
-﻿namespace Pxl.Ui;
+﻿namespace Pxl.Ui.CSharp;
 
 using Pxl;
 
@@ -22,19 +22,5 @@ public class DrawingContext(RenderCtx ctx)
         var builder = factory();
         _builder = builder;
         return builder;
-    }
-}
-
-public static class PxlClock
-{
-    public static RenderCtx Ctx
-    {
-        get
-        {
-            var threadId = Environment.CurrentManagedThreadId;
-            if (RenderCtxInstances.RenderContexts.TryGetValue(threadId, out var ctx))
-                return ctx;
-            throw new Exception($"No RenderCtx associated with the current thread (MTID {threadId}).");
-        }
     }
 }
