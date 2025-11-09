@@ -1,10 +1,10 @@
 <Project>
 
   <PropertyGroup>
-    <Version>0.0.12</Version>
+    <Version>0.0.13</Version>
 
     <Authors>Ronald Schlenker, Sefa Ilkimen</Authors>
-    <Copyright>Copyright 2024 Cumin And Potato GmbH</Copyright>
+    <Copyright>Copyright 2025 Cumin And Potato GmbH</Copyright>
     <PackageTags>pxl pxlclock</PackageTags>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageIcon>logo.png</PackageIcon>
@@ -16,8 +16,8 @@
 
     <PackageReleaseNotes>
 
-      0.0.1
-      - Initial release
+      0.0.x
+      - Initial releases
 
     </PackageReleaseNotes>
   </PropertyGroup>

@@ -39,6 +39,7 @@
         <Compile Include="Ui/Text.fs" />
         <Compile Include="Evaluation.fs" />
         <Compile Include="PxlLocalDev.fs" />
+        <Compile Include="Simulator.fs" />
     </ItemGroup>
 
     <ItemGroup>

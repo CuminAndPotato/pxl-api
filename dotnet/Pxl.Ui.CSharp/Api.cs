@@ -15,11 +15,3 @@ public static class Drawing
         }
     }
 }
-
-public static class Simulator
-{
-    public static void Start(string address, Action scene)
-    {
-        Pxl.PxlLocalDev.Simulator.startWith(address, scene);
-    }
-}
