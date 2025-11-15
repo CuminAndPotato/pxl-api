@@ -8,24 +8,29 @@ open System.Runtime.CompilerServices
 [<StructLayout(LayoutKind.Sequential)>]
 type [<Struct>] Color =
     {
-        r: byte
-        g: byte
-        b: byte
-        a: byte
+        [<CompiledName("R")>] r: byte
+        [<CompiledName("G")>] g: byte
+        [<CompiledName("B")>] b: byte
+        [<CompiledName("A")>] a: byte
     }
 
+    [<CompiledName("Argb")>]
     static member inline argb(a, r, g, b) =
         { a = byte a; r = byte r; g = byte g; b = byte b }
 
+    [<CompiledName("Rgba")>]
     static member inline rgba(r, g, b, a) =
         { a = byte a; r = byte r; g = byte g; b = byte b }
 
+    [<CompiledName("Rgb")>]
     static member inline rgb(r, g, b) =
         { a = 255uy; r = byte r; g = byte g; b = byte b }
 
+    [<CompiledName("Mono")>]
     static member inline mono(v) =
         let v = byte v in Color.rgb(v, v, v)
 
+    [<CompiledName("Hsv")>]
     static member inline hsv(hue: float, saturation: float, value: float) =
         // Hue can be large or negative, so let’s normalize it into [0..360)
         let hue = hue % 360.0 |> (fun x -> if x < 0.0 then x + 360.0 else x)
@@ -63,11 +68,13 @@ type [<Struct>] Color =
             b = byte (255.0 * (b1 + m))
         }
 
+    [<CompiledName("Hsva")>]
     static member hsva(h: float, s: float, v: float, a: float) =
         let color = Color.hsv(h, s, v)
         { color with a = a * 255.0 |> byte }
 
     /// Convert an RGB color (plus alpha) to HSV
+    [<CompiledName("ToHSV")>]
     member this.toHSV() =
         let rf = float this.r / 255.0
         let gf = float this.g / 255.0
@@ -102,15 +109,18 @@ type [<Struct>] Color =
         (h, s, v)
 
     [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
+    [<CompiledName("Opacity")>]
     member this.opacity() =
         float this.a / 255.0
 
     [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
+    [<CompiledName("Opacity")>]
     member this.opacity(value: float) =
         let this = this
         { this with a = (clamp01 value) * 255.0 |> byte }
 
     [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
+    [<CompiledName("Brightness")>]
     member this.brightness() =
         let r, g, b = this.r, this.g, this.b
         // Standard brightness calculation using maximum value of the RGB components
@@ -122,6 +132,7 @@ type [<Struct>] Color =
 
     /// Return a new Color by scaling this color’s RGB values by the given factor.
     [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
+    [<CompiledName("Brightness")>]
     member this.brightness(value: float) =
         let value = clamp01 value
         {
@@ -133,6 +144,7 @@ type [<Struct>] Color =
 
     /// Return a new Color by setting (or shifting) this color’s hue.
     [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
+    [<CompiledName("Hue")>]
     member this.hue(value: float) =
         // 1. Convert old color to HSV
         let (_,s,v) = this.toHSV()

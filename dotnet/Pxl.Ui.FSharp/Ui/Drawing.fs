@@ -100,7 +100,7 @@ namespace Pxl.Ui.FSharp
 open System.Runtime.CompilerServices
 open SkiaSharp
 open Pxl
-open Pxl.Ui.FSharp
+open Pxl.Ui
 open Pxl.Ui.FSharp.Internal.Drawing
 
 [<Extension>]

@@ -1,9 +1,6 @@
-﻿namespace Pxl.Ui.CSharp.Base;
+﻿namespace Pxl.Ui.CSharp.Internal;
 
 using Pxl;
-
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-public class BuilderStyleAttribute : Attribute { public BuilderStyleAttribute() { } }
 
 public class DrawingFunctions(RenderCtx ctx)
 {

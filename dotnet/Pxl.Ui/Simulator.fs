@@ -1,5 +1,5 @@
 [<RequireQualifiedAccess>]
-module Pxl.Simulator
+module Pxl.Ui.Simulator
 
 open System
 open Pxl

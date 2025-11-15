@@ -61,16 +61,26 @@ and [<Sealed>] RenderCtx
 
     let mutable _currentDirectDrawable : IDirectDrawable option = None
 
-    member _.width = _width
-    member _.height = _height
-    member _.halfWidth = float _width / 2.0
-    member _.halfHeight = float _height / 2.0
+    [<CompiledName("Width")>] member _.width = _width
+    [<CompiledName("Height")>] member _.height = _height
+    [<CompiledName("HalfWidth")>] member _.halfWidth = float _width / 2.0
+    [<CompiledName("HalfHeight")>] member _.halfHeight = float _height / 2.0
 
-    member _.now = _now
-    member _.elapsed = _startTime - _now
-    member _.fps = fps
-    member _.canvas = _skCanvas
-    member _.buttons = _buttons
+    [<CompiledName("Now")>] member _.now = _now
+    [<CompiledName("Elapsed")>] member _.elapsed = _startTime - _now
+    [<CompiledName("Fps")>] member _.fps = fps
+    [<CompiledName("Canvas")>] member _.canvas = _skCanvas
+    [<CompiledName("Buttons")>] member _.buttons = _buttons
+
+    member _.ClearScreenOnCycleCompleted(value) =
+        _clear <- value
+
+    member _.GetRawSnapshot() =
+        use intermediateImage = SKImage.FromBitmap(_skBmp)
+        intermediateImage.PeekPixels()
+
+    member this.GetSnapshot() =
+        Interop.pixelSpanToArray (this.GetRawSnapshot().GetPixelSpan())
 
     member internal this.PrepareCycle(startTime: DateTimeOffset, now: DateTimeOffset, buttons: Buttons) =
         _startTime <- startTime
@@ -82,29 +92,19 @@ and [<Sealed>] RenderCtx
         _skCanvas.ResetMatrix()
         RenderCtxInstances.RenderContexts[Thread.CurrentThread.ManagedThreadId] <- this
 
-    member this.BeginDirectDrawable(directDrawable: 'a when 'a :> IDirectDrawable) : 'a =
+    member internal this.BeginDirectDrawable(directDrawable: 'a when 'a :> IDirectDrawable) : 'a =
         this.EndDirectDrawable()
         _currentDirectDrawable <- Some (directDrawable :> IDirectDrawable)
         directDrawable
 
-    member this.Draw = DrawEntry(this)
+    member internal this.Draw = DrawEntry(this)
 
-    member this.EndDirectDrawable() =
+    member internal this.EndDirectDrawable() =
         match _currentDirectDrawable with
         | Some drawable -> drawable.End(this)
         | None -> ()
 
         _currentDirectDrawable <- None
-
-    member _.ClearScreenOnCycleCompleted(value) =
-        _clear <- value
-
-    member _.GetRawSnapshot() =
-        use intermediateImage = SKImage.FromBitmap(_skBmp)
-        intermediateImage.PeekPixels()
-
-    member this.GetSnapshot() =
-        Interop.pixelSpanToArray (this.GetRawSnapshot().GetPixelSpan())
 
     // TODO SendBuffer - pass frame array from outside
     member internal this.EndCycle(dest: Color[]) =

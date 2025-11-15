@@ -2,6 +2,7 @@
 module Pxl.Ui.FSharp.Text
 
 open Pxl
+open Pxl.Ui
 open Pxl.Ui.FSharp.Internal.Drawing
 open SkiaSharp
 

@@ -18,12 +18,18 @@ let inline f32 x = float32 x
 [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
 let inline f32opt x = x |> Option.map f32
 
-type Size = { w: float; h: float }
+type Size =
+    {
+        [<CompiledName("Width")>] w: float
+        [<CompiledName("Height")>] h: float
+    }
 
 [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
+[<CompiledName("XyToIdx")>]
 let xyToIdx width x y = y * width + x
 
 [<MethodImpl(MethodImplOptions.AggressiveInlining)>]
+[<CompiledName("IdxToXy")>]
 let idxToXy width idx = idx % width, idx / width
 
 type Grid<'a>(cells: 'a list, _cols: int) =

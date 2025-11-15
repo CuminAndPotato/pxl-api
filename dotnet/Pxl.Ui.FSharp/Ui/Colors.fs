@@ -5,7 +5,6 @@ open Pxl
 
 let transparentBlack = { a = 0uy; r = 0uy; g = 0uy; b = 0uy }
 let transparentWhite = { a = 0uy; r = 255uy; g = 255uy; b = 255uy }
-
 let aliceBlue = { a = 255uy; r = 240uy; g = 248uy; b = 255uy }
 let antiqueWhite = { a = 255uy; r = 250uy; g = 235uy; b = 215uy }
 let aqua = { a = 255uy; r = 0uy; g = 255uy; b = 255uy }
@@ -147,10 +146,3 @@ let white = { a = 255uy; r = 255uy; g = 255uy; b = 255uy }
 let whiteSmoke = { a = 255uy; r = 245uy; g = 245uy; b = 245uy }
 let yellow = { a = 255uy; r = 255uy; g = 255uy; b = 0uy }
 let yellowGreen = { a = 255uy; r = 154uy; g = 205uy; b = 50uy }
-
-// module Debug =
-//     let printPixels (pixels: Color array) width =
-//         let colorToString (c: Color) = sprintf "#%02X%02X%02X%02X" c.a c.r c.g c.b
-//         for i in 0 .. pixels.Length - 1 do
-//             printf "%s " (colorToString pixels.[i])
-//             if (i + 1) % width = 0 then printfn ""
