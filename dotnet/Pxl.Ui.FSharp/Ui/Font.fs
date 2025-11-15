@@ -1,4 +1,4 @@
-module Pxl.Ui.Fonts
+module Pxl.Ui.FSharp.Fonts
 
 open System
 open SkiaSharp

@@ -1,7 +1,8 @@
-namespace Pxl.Ui.Internal.Imaging
+namespace Pxl.Ui.FSharp.Internal.Imaging
 
 open System
 open Pxl
+open Pxl.Ui.FSharp
 open SkiaSharp
 
 type Frame =
@@ -34,7 +35,7 @@ open System.Runtime.CompilerServices
 open Pxl
 open SkiaSharp
 open System.IO
-open Pxl.Ui.Internal.Imaging
+open Pxl.Ui.FSharp.Internal.Imaging
 
 type Image =
     static member loadFrames(stream: Stream) =

@@ -1,6 +1,4 @@
-﻿namespace PxlClock;
-
-using Pxl;
+﻿namespace Pxl.Ui.CSharp;
 
 public static class Drawing
 {

@@ -1,8 +1,8 @@
 [<AutoOpen>]
-module Pxl.Ui.Shader
+module Pxl.Ui.FSharp.Shader
 
 open Pxl
-open Pxl.Ui.Internal.Drawing
+open Pxl.Ui.FSharp.Internal.Drawing
 
 type [<Struct>] ShaderFxInput =
     {

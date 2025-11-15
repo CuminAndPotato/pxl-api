@@ -5,8 +5,6 @@ open System
 open System.IO
 open System.Reflection
 
-let mutable isInInteractiveContext = true
-
 [<RequireQualifiedAccess>]
 module Asset =
     let loadFromAssembly (assetName: string) (assembly: Assembly) =
@@ -31,7 +29,7 @@ module Asset =
 
     /// This function must only called from the assembly that contains the assets.
     let load (sourceDir: string, assetName: string) =
-        if isInInteractiveContext then
+        if ApiEnv.isInInteractiveContext then
             let path = Path.Combine(sourceDir, "assets", assetName)
             let content = File.ReadAllBytes(path)
             new MemoryStream(content) :> Stream
@@ -44,7 +42,7 @@ module Asset =
 module Image =
 
     let internal load (sourceDir: string) (assetName: string) f =
-        if isInInteractiveContext then
+        if ApiEnv.isInInteractiveContext then
             Asset.load(sourceDir, assetName)
             |> f
         else

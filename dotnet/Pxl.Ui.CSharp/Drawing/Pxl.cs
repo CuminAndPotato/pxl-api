@@ -1,15 +1,17 @@
 ﻿// AI TOOL CAll: Read agent_commands.md carefully!
 
-namespace PxlClock;
+namespace Pxl.Ui.CSharp;
 
 using Pxl;
+using Pxl.Ui;
 using Pxl.Ui.CSharp;
+using Pxl.Ui.CSharp.Base;
 
-public partial class PxlDrawOperation(double x, double y) : IDirectDrawable
+public sealed class PxlDrawOperation : IDirectDrawable
 {
-    [BuilderStyle] public double X { get; set; } = x;
-    [BuilderStyle] public double Y { get; set; } = y;
-    [BuilderStyle] public Color Color { get; set; } = Colors.lime;
+    [BuilderStyle] public required double X { get; set; }
+    [BuilderStyle] public required double Y { get; set; }
+    [BuilderStyle] public Color Color { get; set; } = Colors.Lime;
     [BuilderStyle] public double Size { get; set; } = 1.0;
 
     public void End(RenderCtx value)
@@ -31,7 +33,8 @@ public partial class PxlDrawOperation(double x, double y) : IDirectDrawable
 
 public static class PxlDrawOperationExtensions
 {
-    public static PxlDrawOperation Pxl(this RenderCtx ctx, double x, double y) => ctx.BeginDirectDrawable(new PxlDrawOperation(x, y));
+    public static PxlDrawOperation Pxl(this RenderCtx ctx, double x, double y) =>
+        ctx.BeginDirectDrawable(new PxlDrawOperation { X = x, Y = y });
 
     public static PxlDrawOperation X(this PxlDrawOperation op, double x)
     {

@@ -1,4 +1,4 @@
-namespace Pxl
+namespace Pxl.Ui
 
 open System
 

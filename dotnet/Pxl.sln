@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pxl.Ui.CSharp", "Pxl.Ui.CSh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyPxlApp", "MyPxlApp\MyPxlApp.csproj", "{294BA7A5-64FF-4584-BE00-9C9C068C17B3}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Pxl.Ui.FSharp", "Pxl.Ui.FSharp\Pxl.Ui.FSharp.fsproj", "{054322A4-0CF6-4091-8D71-85706AD85AFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{294BA7A5-64FF-4584-BE00-9C9C068C17B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{294BA7A5-64FF-4584-BE00-9C9C068C17B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{294BA7A5-64FF-4584-BE00-9C9C068C17B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{054322A4-0CF6-4091-8D71-85706AD85AFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{054322A4-0CF6-4091-8D71-85706AD85AFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{054322A4-0CF6-4091-8D71-85706AD85AFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{054322A4-0CF6-4091-8D71-85706AD85AFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

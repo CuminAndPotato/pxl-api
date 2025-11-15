@@ -1,20 +1,22 @@
 ﻿// AI TOOL CAll: Read agent_commands.md carefully!
 
-namespace PxlClock;
+namespace Pxl.Ui.CSharp;
 
+using System.ComponentModel;
 using Pxl;
-using Pxl.Ui.CSharp;
+using Pxl.Ui.CSharp.Base;
 
-public partial class LineDrawOperation(double x1, double y1, double x2, double y2) : IDirectDrawable
+public sealed class LineDrawOperation : IDirectDrawable
 {
-    [BuilderStyle] public double X1 { get; set; } = x1;
-    [BuilderStyle] public double Y1 { get; set; } = y1;
-    [BuilderStyle] public double X2 { get; set; } = x2;
-    [BuilderStyle] public double Y2 { get; set; } = y2;
-    [BuilderStyle] public Color Color { get; set; } = Colors.lime;
+    [BuilderStyle] public required double X1 { get; set; }
+    [BuilderStyle] public required double Y1 { get; set; }
+    [BuilderStyle] public required double X2 { get; set; }
+    [BuilderStyle] public required double Y2 { get; set; }
+    [BuilderStyle] public Color Color { get; set; } = Colors.Lime;
     [BuilderStyle] public double Thickness { get; set; } = 1.0;
     [BuilderStyle] public bool AntiAlias { get; set; } = false;
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void End(RenderCtx value)
     {
         var skiaCanvas = value.canvas;
@@ -32,7 +34,8 @@ public partial class LineDrawOperation(double x1, double y1, double x2, double y
 
 public static class LineDrawOperationExtensions
 {
-    public static LineDrawOperation DrawLine(this RenderCtx ctx, double x1, double y1, double x2, double y2) => ctx.BeginDirectDrawable(new LineDrawOperation(x1, y1, x2, y2));
+    public static LineDrawOperation DrawLine(this RenderCtx ctx, double x1, double y1, double x2, double y2) =>
+        ctx.BeginDirectDrawable(new LineDrawOperation { X1 = x1, Y1 = y1, X2 = x2, Y2 = y2 });
 
     public static LineDrawOperation X1(this LineDrawOperation op, double x1)
     {

@@ -1,5 +1,5 @@
 [<AutoOpen>]
-module Pxl.Ui.Utils
+module Pxl.Ui.FSharp.Utils
 
 let private r = System.Random()
 

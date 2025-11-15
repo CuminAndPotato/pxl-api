@@ -2,10 +2,6 @@
 module Pxl.Simulator
 
 open System
-open System.IO
-open System.Reflection
-
-open System
 open Pxl
 
 // this mechanism prevents multiple running evaluators when loading the assembly multiple times
@@ -25,8 +21,8 @@ let private stopInternal =
         invoke = invoke
     |}
 
-let startEx (createCanvas: (unit -> unit) -> Canvas) scene =
-    if isInInteractiveContext then
+let start (createCanvas: (unit -> unit) -> Canvas) scene =
+    if ApiEnv.isInInteractiveContext then
         let mutable retry = true
 
         let rec reStart () =
@@ -65,16 +61,11 @@ let startEx (createCanvas: (unit -> unit) -> Canvas) scene =
     else
         ()
 
-let start (receiver: string) scene =
-    scene |> startEx (CanvasProxy.createWithDefaults receiver)
-
-let startWith (receiver: string) (sceneFunc: Action) =
+let startAction (createCanvas: (unit -> unit) -> Canvas) (sceneFunc: System.Action) =
     let scene = scene { do sceneFunc.Invoke() }
-    scene |> startEx (CanvasProxy.createWithDefaults receiver)
-    Console.WriteLine("Simulator started. Press any key to exit...");
-    Console.ReadKey() |> ignore
+    do start createCanvas scene       
 
 let stop () =
-    if isInInteractiveContext
+    if ApiEnv.isInInteractiveContext
     then stopInternal.invoke()
     else ()

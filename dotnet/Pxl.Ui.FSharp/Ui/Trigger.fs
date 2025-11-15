@@ -1,4 +1,4 @@
-namespace Pxl.Ui
+namespace Pxl.Ui.FSharp
 
 open Pxl
 

@@ -15,20 +15,34 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="AssemblyInfo.fs" />
-        <Compile Include="Utils.fs" />
-        <Compile Include="Color.fs" />
-        <Compile Include="Canvas.fs" />
-        <Compile Include="RenderCtx.fs" />
-        <Compile Include="ApiEnv.fs" />
-        <Compile Include="Vide.fs" />
-        <Compile Include="Evaluation.fs" />
+        <Compile Include="AppV1Attribute.fs" />
+        <Compile Include="Debug.fs" />
+        <Compile Include="Ui/Utils.fs" />
+        <Compile Include="Ui/Domain.fs" />
+        <Compile Include="Ui/Colors.fs" />
+        <Compile Include="Ui/Drawing.fs" />
+        <Compile Include="Ui/Global.fs" />
+        <Compile Include="Ui/Logic.fs" />
+        <Compile Include="Ui/Font.fs" />
+        <Compile Include="Ui/Shapes.fs" />
+        <Compile Include="Ui/Shader.fs" />
+        <Compile Include="Ui/Imaging.fs" />
+        <Compile Include="Ui/Layer.fs" />
+        <Compile Include="Ui/Timer.fs" />
+        <Compile Include="Ui/Trigger.fs" />
+        <Compile Include="Ui/Anim.fs" />
+        <Compile Include="Ui/Text.fs" />
         <Compile Include="Simulator.fs" />
+        <Compile Include="PxlLocalDev.fs" />
     </ItemGroup>
 
     <ItemGroup>
         <EmbeddedResource Include="Ui/Fonts/*.ttf" />
         <EmbeddedResource Include="Ui/Fonts/*.otf" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../Pxl.Ui/Pxl.Ui.fsproj" />
     </ItemGroup>
 
     <ItemGroup>

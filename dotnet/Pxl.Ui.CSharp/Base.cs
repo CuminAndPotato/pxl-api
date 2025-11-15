@@ -1,4 +1,4 @@
-﻿namespace Pxl.Ui.CSharp;
+﻿namespace Pxl.Ui.CSharp.Base;
 
 using Pxl;
 

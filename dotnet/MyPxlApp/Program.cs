@@ -1,6 +1,6 @@
 ﻿using System;
-using PxlClock;
-using static PxlClock.Drawing;
+using Pxl.Ui.CSharp;
+using static Pxl.Ui.CSharp.Drawing;
 
 var myScene = () =>
 {

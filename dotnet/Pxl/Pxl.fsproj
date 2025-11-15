@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pxl.Ui\Pxl.Ui.fsproj" />
+    <ProjectReference Include="..\Pxl.Ui.FSharp\Pxl.Ui.FSharp.fsproj" />
     <ProjectReference Include="..\Pxl.Ui.CSharp\Pxl.Ui.CSharp.csproj" />
   </ItemGroup>
 

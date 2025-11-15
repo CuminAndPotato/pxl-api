@@ -1,9 +1,10 @@
 [<AutoOpen>]
-module Pxl.Ui.Shapes
+module Pxl.Ui.FSharp.Shapes
 
 open Pxl
+open Pxl.Ui.FSharp
 open SkiaSharp
-open Pxl.Ui.Internal.Drawing
+open Pxl.Ui.FSharp.Internal.Drawing
 
 
 type pxls =

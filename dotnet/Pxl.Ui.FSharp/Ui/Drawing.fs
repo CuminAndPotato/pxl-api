@@ -1,6 +1,7 @@
-namespace Pxl.Ui.Internal.Drawing
+namespace Pxl.Ui.FSharp.Internal.Drawing
 
 open Pxl
+open Pxl.Ui.FSharp
 open SkiaSharp
 
 module Color =
@@ -94,12 +95,13 @@ type StrokeFillBuilder(isAntialias) =
             } with get, set
 
 
-namespace Pxl.Ui
+namespace Pxl.Ui.FSharp
 
 open System.Runtime.CompilerServices
 open SkiaSharp
 open Pxl
-open Pxl.Ui.Internal.Drawing
+open Pxl.Ui.FSharp
+open Pxl.Ui.FSharp.Internal.Drawing
 
 [<Extension>]
 type StrokeDrawableExtensions =
