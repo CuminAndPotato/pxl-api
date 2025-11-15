@@ -45,10 +45,4 @@
         <ProjectReference Include="../Pxl.Ui/Pxl.Ui.fsproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="FsHttp" Version="15.0.1" />
-        <PackageReference Include="SkiaSharp" Version="3.119.0" />
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.0" />
-    </ItemGroup>
-
 </Project>

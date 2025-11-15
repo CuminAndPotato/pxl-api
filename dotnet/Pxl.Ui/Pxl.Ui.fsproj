@@ -27,11 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Ui/Fonts/*.ttf" />
-        <EmbeddedResource Include="Ui/Fonts/*.otf" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="FsHttp" Version="15.0.1" />
         <PackageReference Include="SkiaSharp" Version="3.119.0" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.0" />
