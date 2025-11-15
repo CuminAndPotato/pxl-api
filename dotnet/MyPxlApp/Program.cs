@@ -222,14 +222,43 @@ var pacManScene = () =>
     Ctx.ArcCenter(12, 12, 6, 45, 270).Fill.Solid(Colors.Yellow);
 };
 
+// Scene 12: Text demonstration
+var textScene = () =>
+{
+    // Title with different fonts
+    Ctx.Text().Mono6x6("FONTS", 0, 0).Fill.Solid(Colors.White);
+    
+    // Small fonts
+    Ctx.Text().Var3x5("3x5", 0, 7).Fill.Solid(Colors.Cyan);
+    Ctx.Text().Mono4x5("4x5", 0, 13).Fill.Solid(Colors.Yellow);
+    
+    // Medium font with gradient
+    Ctx.Text().Mono6x6("Hi!", 0, 18).Fill.HorizontalGradient(18, Colors.Red, Colors.Orange, Colors.Yellow);
+};
+
+// Scene 13: Text with graphics combined
+var textGraphicsScene = () =>
+{
+    // Score display
+    Ctx.Text().Mono4x5("SCORE", 1, 1).Fill.Solid(Colors.White);
+    Ctx.Text().Mono6x6("PXL", 1, 7)
+        .Fill.Solid(Colors.Yellow)
+        .SkewX(-0.2f);
+    
+    Ctx.Text().Var3x5("PAC", 12, 16).Fill.Solid(Colors.White);
+    Ctx.Text().Var3x5("MAN", 12, 20).Fill.Solid(Colors.White);
+};
+
 
 
 // Try: 
 // lineScene, rectScene, circleScene, combinedScene
 // gridScene, linearGradientScene, radialGradientScene, sweepGradientScene, mixedGradientsScene
-// gradientSmileyScene, pacManScene
-var currentScene = pacManScene;
+// gradientSmileyScene, pacManScene, textScene, textGraphicsScene
+var currentScene = textGraphicsScene;
 
 
+var host = "localhost";
+// var host = "192.168.178.52";
 
-Simulator.Start("localhost", currentScene);
+Simulator.Start(host, currentScene);

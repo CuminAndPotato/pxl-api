@@ -14,6 +14,11 @@
     </ItemGroup>
 
     <ItemGroup>
+        <EmbeddedResource Include="Drawing/Fonts/*.ttf" />
+        <EmbeddedResource Include="Drawing/Fonts/*.otf" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="../Pxl.Ui/Pxl.Ui.fsproj" />
     </ItemGroup>
 

@@ -8,8 +8,8 @@ using SkiaSharp;
 
 public sealed class ArcDrawOperation : IDirectDrawable
 {
-    public PaintProxy Stroke { get; } =
-        new(() => new SKPaint
+    public PaintProxy<ArcDrawOperation> Stroke =>
+        new(this, () => new SKPaint
         {
             Color = Colors.Lime,
             StrokeWidth = 1,
@@ -17,8 +17,8 @@ public sealed class ArcDrawOperation : IDirectDrawable
             IsAntialias = true
         });
 
-    public PaintProxy Fill { get; } =
-        new(() => new SKPaint
+    public PaintProxy<ArcDrawOperation> Fill =>
+        new(this, () => new SKPaint
         {
             Color = Colors.TransparentBlack,
             IsStroke = false,

@@ -7,7 +7,7 @@ using SkiaSharp;
 /// <summary>
 /// Proxy for fluent paint definition. Use extension methods to configure paints.
 /// </summary>
-public class PaintProxy(Func<SKPaint> defaultFactory)
+public class PaintProxy<TParent>(TParent parent, Func<SKPaint> defaultFactory)
 {
     private Func<SKPaint> _factory = defaultFactory;
 
@@ -17,6 +17,7 @@ public class PaintProxy(Func<SKPaint> defaultFactory)
     }
 
     internal SKPaint CreatePaint() => _factory();
+    internal TParent Parent => parent;
 }
 
 /// <summary>
@@ -27,8 +28,8 @@ public static class PaintProxyExtensions
     /// <summary>
     /// Create a solid color paint.
     /// </summary>
-    public static PaintProxy Solid(
-        this PaintProxy proxy,
+    public static TParent Solid<TParent>(
+        this PaintProxy<TParent> proxy,
         SKColor color,
         float strokeWidth = 1,
         bool isAntialias = false)
@@ -39,14 +40,14 @@ public static class PaintProxyExtensions
             StrokeWidth = strokeWidth,
             IsAntialias = isAntialias
         });
-        return proxy;
+        return proxy.Parent;
     }
 
     /// <summary>
     /// Create a linear gradient from start point to end point.
     /// </summary>
-    public static PaintProxy LinearGradient(
-        this PaintProxy proxy,
+    public static TParent LinearGradient<TParent>(
+        this PaintProxy<TParent> proxy,
         SKPoint start,
         SKPoint end,
         SKColor[] colors,
@@ -61,14 +62,14 @@ public static class PaintProxyExtensions
             StrokeWidth = strokeWidth,
             IsAntialias = isAntialias
         });
-        return proxy;
+        return proxy.Parent;
     }
 
     /// <summary>
     /// Create a radial gradient emanating from a center point.
     /// </summary>
-    public static PaintProxy RadialGradient(
-        this PaintProxy proxy,
+    public static TParent RadialGradient<TParent>(
+        this PaintProxy<TParent> proxy,
         SKPoint center,
         float radius,
         SKColor[] colors,
@@ -83,14 +84,14 @@ public static class PaintProxyExtensions
             StrokeWidth = strokeWidth,
             IsAntialias = isAntialias
         });
-        return proxy;
+        return proxy.Parent;
     }
 
     /// <summary>
     /// Create a two-point conical gradient (cone gradient between two circles).
     /// </summary>
-    public static PaintProxy TwoPointConicalGradient(
-        this PaintProxy proxy,
+    public static TParent TwoPointConicalGradient<TParent>(
+        this PaintProxy<TParent> proxy,
         SKPoint startCenter,
         float startRadius,
         SKPoint endCenter,
@@ -108,14 +109,14 @@ public static class PaintProxyExtensions
             StrokeWidth = strokeWidth,
             IsAntialias = isAntialias
         });
-        return proxy;
+        return proxy.Parent;
     }
 
     /// <summary>
     /// Create a sweep (angular) gradient rotating around a center point.
     /// </summary>
-    public static PaintProxy SweepGradient(
-        this PaintProxy proxy,
+    public static TParent SweepGradient<TParent>(
+        this PaintProxy<TParent> proxy,
         SKPoint center,
         SKColor[] colors,
         float[]? positions = null,
@@ -131,14 +132,14 @@ public static class PaintProxyExtensions
             StrokeWidth = strokeWidth,
             IsAntialias = isAntialias
         });
-        return proxy;
+        return proxy.Parent;
     }
 
     /// <summary>
     /// Create a Perlin noise fractal pattern.
     /// </summary>
-    public static PaintProxy PerlinNoiseFractal(
-        this PaintProxy proxy,
+    public static TParent PerlinNoiseFractal<TParent>(
+        this PaintProxy<TParent> proxy,
         float baseFrequencyX,
         float baseFrequencyY,
         int numOctaves,
@@ -152,14 +153,14 @@ public static class PaintProxyExtensions
             StrokeWidth = strokeWidth,
             IsAntialias = isAntialias
         });
-        return proxy;
+        return proxy.Parent;
     }
 
     /// <summary>
     /// Create a Perlin noise turbulence pattern.
     /// </summary>
-    public static PaintProxy PerlinNoiseTurbulence(
-        this PaintProxy proxy,
+    public static TParent PerlinNoiseTurbulence<TParent>(
+        this PaintProxy<TParent> proxy,
         float baseFrequencyX,
         float baseFrequencyY,
         int numOctaves,
@@ -173,14 +174,14 @@ public static class PaintProxyExtensions
             StrokeWidth = strokeWidth,
             IsAntialias = isAntialias
         });
-        return proxy;
+        return proxy.Parent;
     }
 
     /// <summary>
     /// Create an image-based pattern/texture.
     /// </summary>
-    public static PaintProxy ImagePattern(
-        this PaintProxy proxy,
+    public static TParent ImagePattern<TParent>(
+        this PaintProxy<TParent> proxy,
         SKImage image,
         SKShaderTileMode tileX = SKShaderTileMode.Repeat,
         SKShaderTileMode tileY = SKShaderTileMode.Repeat,
@@ -195,14 +196,14 @@ public static class PaintProxyExtensions
             StrokeWidth = strokeWidth,
             IsAntialias = isAntialias
         });
-        return proxy;
+        return proxy.Parent;
     }
 
     /// <summary>
     /// Use a custom SKShader.
     /// </summary>
-    public static PaintProxy CustomShader(
-        this PaintProxy proxy, 
+    public static TParent CustomShader<TParent>(
+        this PaintProxy<TParent> proxy, 
         SKShader shader, 
         float strokeWidth = 1,
         bool isAntialias = false)
@@ -213,13 +214,13 @@ public static class PaintProxyExtensions
             StrokeWidth = strokeWidth,
             IsAntialias = isAntialias
         });
-        return proxy;
+        return proxy.Parent;
     }
 
     /// <summary>
     /// Create a linear gradient from top to bottom.
     /// </summary>
-    public static PaintProxy VerticalGradient(this PaintProxy proxy, float height, params SKColor[] colors)
+    public static TParent VerticalGradient<TParent>(this PaintProxy<TParent> proxy, float height, params SKColor[] colors)
     {
         return proxy.LinearGradient(
             new SKPoint(0, 0),
@@ -231,7 +232,7 @@ public static class PaintProxyExtensions
     /// <summary>
     /// Create a linear gradient from left to right.
     /// </summary>
-    public static PaintProxy HorizontalGradient(this PaintProxy proxy, float width, params SKColor[] colors)
+    public static TParent HorizontalGradient<TParent>(this PaintProxy<TParent> proxy, float width, params SKColor[] colors)
     {
         return proxy.LinearGradient(
             new SKPoint(0, 0),

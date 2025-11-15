@@ -8,8 +8,8 @@ using SkiaSharp;
 
 public sealed class LineDrawOperation : IDirectDrawable
 {
-    public PaintProxy Stroke { get; } =
-        new(() => new SKPaint
+    public PaintProxy<LineDrawOperation> Stroke =>
+        new(this, () => new SKPaint
         {
             Color = Colors.Lime,
             StrokeWidth = 1,
