@@ -242,8 +242,9 @@ var textGraphicsScene = () =>
     // Score display
     Ctx.Text().Mono4x5("SCORE", 1, 1).Fill.Solid(Colors.White);
     Ctx.Text().Mono6x6("PXL", 1, 7)
+        .SkewX(-0.2f)
         .Fill.Solid(Colors.Yellow)
-        .SkewX(-0.2f);
+        ;
     
     Ctx.Text().Var3x5("PAC", 12, 16).Fill.Solid(Colors.White);
     Ctx.Text().Var3x5("MAN", 12, 20).Fill.Solid(Colors.White);

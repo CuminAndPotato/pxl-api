@@ -8,8 +8,9 @@ using SkiaSharp;
 
 public sealed class CircleDrawOperation : IDirectDrawable
 {
-    public PaintProxy<CircleDrawOperation> Stroke =>
-        new(this, () => new SKPaint
+    public CircleDrawOperation()
+    {
+        Stroke = new PaintProxy<CircleDrawOperation>(this, () => new SKPaint
         {
             Color = Colors.Lime,
             StrokeWidth = 1,
@@ -17,13 +18,16 @@ public sealed class CircleDrawOperation : IDirectDrawable
             IsAntialias = true
         });
 
-    public PaintProxy<CircleDrawOperation> Fill =>
-        new(this, () => new SKPaint
+        Fill = new PaintProxy<CircleDrawOperation>(this, () => new SKPaint
         {
             Color = Colors.TransparentBlack,
             IsStroke = false,
             IsAntialias = true
         });
+    }
+
+    public PaintProxy<CircleDrawOperation> Stroke { get; }
+    public PaintProxy<CircleDrawOperation> Fill { get; }
 
     public required double CenterX { get; set; }
     public required double CenterY { get; set; }

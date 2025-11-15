@@ -8,13 +8,17 @@ using SkiaSharp;
 
 public sealed class TextDrawOperation : IDirectDrawable
 {
-    public PaintProxy<TextDrawOperation> Fill =>
-        new(this, () => new SKPaint
+    public TextDrawOperation()
+    {
+        Fill = new PaintProxy<TextDrawOperation>(this, () => new SKPaint
         {
             Color = Colors.White,
             IsStroke = false,
             IsAntialias = false
         });
+    }
+
+    public PaintProxy<TextDrawOperation> Fill { get; }
 
     public required string Text { get; set; }
     public required double X { get; set; }

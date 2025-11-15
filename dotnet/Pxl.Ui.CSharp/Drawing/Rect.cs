@@ -8,8 +8,9 @@ using SkiaSharp;
 
 public sealed class RectDrawOperation : IDirectDrawable
 {
-    public PaintProxy<RectDrawOperation> Stroke =>
-        new(this, () => new SKPaint
+    public RectDrawOperation()
+    {
+        Stroke = new PaintProxy<RectDrawOperation>(this, () => new SKPaint
         {
             Color = Colors.Lime,
             StrokeWidth = 1,
@@ -17,13 +18,16 @@ public sealed class RectDrawOperation : IDirectDrawable
             IsAntialias = true
         });
 
-    public PaintProxy<RectDrawOperation> Fill =>
-        new(this, () => new SKPaint
+        Fill = new PaintProxy<RectDrawOperation>(this, () => new SKPaint
         {
             Color = Colors.TransparentBlack,
             IsStroke = false,
             IsAntialias = true
         });
+    }
+
+    public PaintProxy<RectDrawOperation> Stroke { get; }
+    public PaintProxy<RectDrawOperation> Fill { get; }
 
     public required double X { get; set; }
     public required double Y { get; set; }
