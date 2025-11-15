@@ -14,7 +14,7 @@ let getBuiltinTypeface fontFileName =
     use stream =
         Reflection.Assembly
             .GetExecutingAssembly()
-            .GetManifestResourceStream("Pxl.Ui.Ui.Fonts." + fontFileName)
+            .GetManifestResourceStream("Pxl.Ui.FSharp.Ui.Fonts." + fontFileName)
     if stream = null then
         failwithf "Font (resource) '%s' not found" fontFileName
     new SKFont(SKTypeface.FromStream(stream))
