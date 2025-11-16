@@ -7,7 +7,7 @@ public static class Simulator
         Pxl.Ui.Simulator.startAction(
             CanvasProxy.createWithDefaults(host),
             myScene);
-        Console.WriteLine("Simulator started. Press any key to exit...");
-        Console.ReadKey();
+        if (Pxl.ApiEnv.isInInteractiveContext)
+            Console.WriteLine("Simulator started. Press any key to exit...");
     }
 }
