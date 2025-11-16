@@ -6,14 +6,18 @@ using SkiaSharp;
 
 public sealed class PointDrawOperation : IDirectDrawable
 {
-    public PaintProxy<PointDrawOperation> Stroke =>
-        new(this, () => new SKPaint
+    public PointDrawOperation()
+    {
+        Stroke = new PaintProxy<PointDrawOperation>(this, () => new SKPaint
         {
             Color = Colors.Lime,
             StrokeWidth = 1,
             IsStroke = true,
             IsAntialias = true
         });
+    }
+
+    public PaintProxy<PointDrawOperation> Stroke { get; }
 
     public required double X { get; set; }
     public required double Y { get; set; }

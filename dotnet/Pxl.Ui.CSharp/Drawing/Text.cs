@@ -10,7 +10,7 @@ public sealed class TextDrawOperation : IDirectDrawable
 {
     public TextDrawOperation()
     {
-        Fill = new PaintProxy<TextDrawOperation>(this, () => new SKPaint
+        Brush = new PaintProxy<TextDrawOperation>(this, () => new SKPaint
         {
             Color = Colors.White,
             IsStroke = false,
@@ -18,7 +18,7 @@ public sealed class TextDrawOperation : IDirectDrawable
         });
     }
 
-    public PaintProxy<TextDrawOperation> Fill { get; }
+    public PaintProxy<TextDrawOperation> Brush { get; }
 
     public required string Text { get; set; }
     public required double X { get; set; }
@@ -48,11 +48,12 @@ public sealed class TextDrawOperation : IDirectDrawable
             LinearMetrics = LinearMetrics,
             Subpixel = Subpixel,
         };
-        using var fillPaint = Fill.CreatePaint();
 
+        using var paint = Brush.CreatePaint();
+        
         // Y position includes ascent and font size (ascent is typically negative or 0)
         var drawY = (float)(Y + Font.DefaultAscent + Font.DefaultHeight);
-        ctx.Canvas.DrawText(Text, (float)X, drawY, font, fillPaint);
+        ctx.Canvas.DrawText(Text, (float)X, drawY, font, paint);
     }
 }
 

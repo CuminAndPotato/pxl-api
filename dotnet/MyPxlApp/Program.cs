@@ -226,28 +226,28 @@ var pacManScene = () =>
 var textScene = () =>
 {
     // Title with different fonts
-    Ctx.Text().Mono6x6("FONTS", 0, 0).Fill.Solid(Colors.White);
+    Ctx.Text().Mono6x6("FONTS", 0, 0).Brush.Solid(Colors.White);
     
     // Small fonts
-    Ctx.Text().Var3x5("3x5", 0, 7).Fill.Solid(Colors.Cyan);
-    Ctx.Text().Mono4x5("4x5", 0, 13).Fill.Solid(Colors.Yellow);
+    Ctx.Text().Var3x5("3x5", 0, 7).Brush.Solid(Colors.Cyan);
+    Ctx.Text().Mono4x5("4x5", 0, 13).Brush.Solid(Colors.Yellow);
     
     // Medium font with gradient
-    Ctx.Text().Mono6x6("Hi!", 0, 18).Fill.HorizontalGradient(18, Colors.Red, Colors.Orange, Colors.Yellow);
+    Ctx.Text().Mono6x6("Hi!", 0, 18).Brush.HorizontalGradient(18, Colors.Red, Colors.Orange, Colors.Yellow);
 };
 
 // Scene 13: Text with graphics combined
 var textGraphicsScene = () =>
 {
     // Score display
-    Ctx.Text().Mono4x5("SCORE", 1, 1).Fill.Solid(Colors.White);
+    Ctx.Text().Mono4x5("SCORE", 1, 1).Brush.Solid(Colors.White);
     Ctx.Text().Mono6x6("PXL", 1, 7)
         .SkewX(-0.2f)
-        .Fill.Solid(Colors.Yellow)
+        .Brush.Solid(Colors.Yellow)
         ;
     
-    Ctx.Text().Var3x5("PAC", 12, 16).Fill.Solid(Colors.White);
-    Ctx.Text().Var3x5("MAN", 12, 20).Fill.Solid(Colors.White);
+    Ctx.Text().Var3x5("PAC", 12, 16).Brush.Solid(Colors.White);
+    Ctx.Text().Var3x5("MAN", 12, 20).Brush.Solid(Colors.White);
 };
 
 

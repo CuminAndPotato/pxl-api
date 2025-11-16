@@ -10,13 +10,7 @@ public sealed class ArcDrawOperation : IDirectDrawable
 {
     public ArcDrawOperation()
     {
-        Stroke = new PaintProxy<ArcDrawOperation>(this, () => new SKPaint
-        {
-            Color = Colors.Lime,
-            StrokeWidth = 1,
-            IsStroke = true,
-            IsAntialias = true
-        });
+        Stroke = new PaintProxy<ArcDrawOperation>(this);
 
         Fill = new PaintProxy<ArcDrawOperation>(this, () => new SKPaint
         {
@@ -44,7 +38,7 @@ public sealed class ArcDrawOperation : IDirectDrawable
         var centerY = rect.MidY;
 
         using var fillPaint = Fill.CreatePaint();
-        if (fillPaint.Color.Alpha > 0)
+        if (fillPaint?.Color.Alpha > 0)
         {
             using var path = new SKPath();
             path.MoveTo(centerX, centerY);
@@ -54,7 +48,7 @@ public sealed class ArcDrawOperation : IDirectDrawable
         }
 
         using var strokePaint = Stroke.CreatePaint();
-        if (strokePaint.Color.Alpha > 0)
+        if (strokePaint?.Color.Alpha > 0)
         {
             using var path = new SKPath();
             path.MoveTo(centerX, centerY);

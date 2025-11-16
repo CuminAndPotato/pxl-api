@@ -10,17 +10,11 @@ public sealed class CircleDrawOperation : IDirectDrawable
 {
     public CircleDrawOperation()
     {
-        Stroke = new PaintProxy<CircleDrawOperation>(this, () => new SKPaint
-        {
-            Color = Colors.Lime,
-            StrokeWidth = 1,
-            IsStroke = true,
-            IsAntialias = true
-        });
+        Stroke = new PaintProxy<CircleDrawOperation>(this);
 
         Fill = new PaintProxy<CircleDrawOperation>(this, () => new SKPaint
         {
-            Color = Colors.TransparentBlack,
+            Color = Colors.Lime,
             IsStroke = false,
             IsAntialias = true
         });
@@ -37,16 +31,12 @@ public sealed class CircleDrawOperation : IDirectDrawable
     public void End(RenderCtx ctx)
     {
         using var fillPaint = Fill.CreatePaint();
-        if (fillPaint.Color.Alpha > 0)
-        {
+        if (fillPaint?.Color.Alpha> 0)
             ctx.Canvas.DrawCircle((float)CenterX, (float)CenterY, (float)Radius, fillPaint);
-        }
 
         using var strokePaint = Stroke.CreatePaint();
-        if (strokePaint.Color.Alpha > 0)
-        {
+        if (strokePaint?.Color.Alpha > 0)
             ctx.Canvas.DrawCircle((float)CenterX, (float)CenterY, (float)Radius, strokePaint);
-        }
     }
 }
 

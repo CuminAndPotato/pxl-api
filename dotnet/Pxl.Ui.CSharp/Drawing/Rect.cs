@@ -10,13 +10,7 @@ public sealed class RectDrawOperation : IDirectDrawable
 {
     public RectDrawOperation()
     {
-        Stroke = new PaintProxy<RectDrawOperation>(this, () => new SKPaint
-        {
-            Color = Colors.Lime,
-            StrokeWidth = 1,
-            IsStroke = true,
-            IsAntialias = true
-        });
+        Stroke = new PaintProxy<RectDrawOperation>(this);
 
         Fill = new PaintProxy<RectDrawOperation>(this, () => new SKPaint
         {

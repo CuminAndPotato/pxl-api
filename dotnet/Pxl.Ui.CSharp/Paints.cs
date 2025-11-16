@@ -7,16 +7,16 @@ using SkiaSharp;
 /// <summary>
 /// Proxy for fluent paint definition. Use extension methods to configure paints.
 /// </summary>
-public class PaintProxy<TParent>(TParent parent, Func<SKPaint> defaultFactory)
+public class PaintProxy<TParent>(TParent parent, Func<SKPaint>? defaultFactory = null)
 {
-    private Func<SKPaint> _factory = defaultFactory;
+    private Func<SKPaint>? _factory = defaultFactory;
 
     internal void SetPaintFactory(Func<SKPaint> factory)
     {
         _factory = factory;
     }
 
-    internal SKPaint CreatePaint() => _factory();
+    internal SKPaint? CreatePaint() => _factory?.Invoke();
     internal TParent Parent => parent;
 }
 
