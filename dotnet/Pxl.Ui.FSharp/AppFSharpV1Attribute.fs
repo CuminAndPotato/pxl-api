@@ -1,9 +1,9 @@
-namespace Pxl.Ui
+namespace Pxl.Ui.FSharp
 
 open System
 
 [<AttributeUsage(AttributeTargets.All, AllowMultiple = false)>]
-type AppV1Attribute(name: string) =
+type AppFSharpV1Attribute(name: string) =
     inherit Attribute()
     member _.name = name
     member val defaultDurationInSeconds = 15.0 with get, set

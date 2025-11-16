@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Include="AppV1Attribute.fs" />
+        <Compile Include="AppFSharpV1Attribute.fs" />
         <Compile Include="Debug.fs" />
         <Compile Include="Ui/Utils.fs" />
         <Compile Include="Ui/Domain.fs" />
