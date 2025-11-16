@@ -38,7 +38,7 @@ public sealed class ArcDrawOperation : IDirectDrawable
         var centerY = rect.MidY;
 
         using var fillPaint = Fill.CreatePaint();
-        if (fillPaint?.Color.Alpha > 0)
+        if (fillPaint != null)
         {
             using var path = new SKPath();
             path.MoveTo(centerX, centerY);
@@ -48,7 +48,7 @@ public sealed class ArcDrawOperation : IDirectDrawable
         }
 
         using var strokePaint = Stroke.CreatePaint();
-        if (strokePaint?.Color.Alpha > 0)
+        if (strokePaint != null)
         {
             using var path = new SKPath();
             path.MoveTo(centerX, centerY);

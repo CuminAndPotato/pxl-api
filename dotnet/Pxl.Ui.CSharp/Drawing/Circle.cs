@@ -31,11 +31,11 @@ public sealed class CircleDrawOperation : IDirectDrawable
     public void End(RenderCtx ctx)
     {
         using var fillPaint = Fill.CreatePaint();
-        if (fillPaint?.Color.Alpha> 0)
+        if (fillPaint != null)
             ctx.Canvas.DrawCircle((float)CenterX, (float)CenterY, (float)Radius, fillPaint);
 
         using var strokePaint = Stroke.CreatePaint();
-        if (strokePaint?.Color.Alpha > 0)
+        if (strokePaint != null)
             ctx.Canvas.DrawCircle((float)CenterX, (float)CenterY, (float)Radius, strokePaint);
     }
 }

@@ -34,16 +34,12 @@ public sealed class RectDrawOperation : IDirectDrawable
         var rect = new SKRect((float)X, (float)Y, (float)(X + Width), (float)(Y + Height));
 
         using var fillPaint = Fill.CreatePaint();
-        if (fillPaint.Color.Alpha > 0)
-        {
+        if (fillPaint != null)
             ctx.Canvas.DrawRect(rect, fillPaint);
-        }
 
         using var strokePaint = Stroke.CreatePaint();
-        if (strokePaint.Color.Alpha > 0)
-        {
+        if (strokePaint != null)
             ctx.Canvas.DrawRect(rect, strokePaint);
-        }
     }
 }
 

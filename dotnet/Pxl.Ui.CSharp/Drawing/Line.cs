@@ -30,7 +30,8 @@ public sealed class LineDrawOperation : IDirectDrawable
     public void End(RenderCtx ctx)
     {
         using var paint = Stroke.CreatePaint();
-        ctx.Canvas.DrawLine((float)X1, (float)Y1, (float)X2, (float)Y2, paint);
+        if (paint != null)
+            ctx.Canvas.DrawLine((float)X1, (float)Y1, (float)X2, (float)Y2, paint);
     }
 }
 

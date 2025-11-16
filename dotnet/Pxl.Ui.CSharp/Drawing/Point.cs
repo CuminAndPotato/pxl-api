@@ -26,7 +26,8 @@ public sealed class PointDrawOperation : IDirectDrawable
     public void End(RenderCtx ctx)
     {
         using var paint = Stroke.CreatePaint();
-        ctx.Canvas.DrawPoint((float)X, (float)Y, paint);
+        if (paint != null)
+            ctx.Canvas.DrawPoint((float)X, (float)Y, paint);
     }
 }
 

@@ -50,10 +50,13 @@ public sealed class TextDrawOperation : IDirectDrawable
         };
 
         using var paint = Brush.CreatePaint();
-        
-        // Y position includes ascent and font size (ascent is typically negative or 0)
-        var drawY = (float)(Y + Font.DefaultAscent + Font.DefaultHeight);
-        ctx.Canvas.DrawText(Text, (float)X, drawY, font, paint);
+
+        if (paint != null)
+        {
+            // Y position includes ascent and font size (ascent is typically negative or 0)
+            var drawY = (float)(Y + Font.DefaultAscent + Font.DefaultHeight);
+            ctx.Canvas.DrawText(Text, (float)X, drawY, font, paint);
+        }
     }
 }
 
