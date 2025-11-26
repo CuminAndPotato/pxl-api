@@ -115,7 +115,18 @@ module CanvasProxy =
             }
             |> Request.send
             |> Response.assert2xx
-            |> Response.deserializeJson<CanvasMetadata>
+            // |> Response.deserializeJson<CanvasMetadata>
+            |> Response.toJson
+            |> fun json ->
+                // Why? Np reflection / AOT compat.
+                let names : CanvasMetadata = { width = 0; height = 0; fps = 0 }
+                let res =
+                    {
+                        CanvasMetadata.width = json.GetProperty(nameof names.width).GetInt32()
+                        height = json.GetProperty(nameof names.height).GetInt32()
+                        fps = json.GetProperty(nameof names.fps).GetInt32()
+                    }
+                res
 
         let client = new TcpClient(remote, InvariantServicePorts.tcp)
         let stream = client.GetStream()
