@@ -262,4 +262,4 @@ var currentScene = textGraphicsScene;
 var host = "localhost";
 // var host = "192.168.178.52";
 
-Simulator.Start(host, currentScene);
+Simulator.Send(host, currentScene);
