@@ -1,4 +1,4 @@
-# PXL-Api - The place where all backends for creating PXL-Apps live!
+# pxl-api - The place where all backends for creating PXL-Apps live!
 
 First Things First
 
