@@ -1,4 +1,4 @@
-#:package Pxl@0.0.24
+#:package Pxl@0.0.25
 
 using Pxl.Ui.CSharp;
 using SkiaSharp;

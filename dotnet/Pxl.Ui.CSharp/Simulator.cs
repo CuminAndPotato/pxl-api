@@ -8,18 +8,24 @@ public static class Simulator
 
     private static readonly string SimulatorUrl = $"http://127.0.0.1:{CanvasProxy.InvariantServicePorts.http}";
 
-    public static Task Send(string host, Action myScene)
+    public static async Task Send(string host, Action myScene)
     {
+        if (!ApiEnv.isInInteractiveContext)
+            return;
+
         Pxl.Ui.Simulator.startAction(
             CanvasProxy.createWithDefaults(host),
             myScene);
         if (Pxl.ApiEnv.isInInteractiveContext)
             Console.WriteLine("Simulator started ...");
-        return Task.Delay(Timeout.Infinite);
+        await Task.Delay(Timeout.Infinite);
     }
 
     public static async Task Run(string host, bool openSimulatorGuiInBrowser, Action myScene)
     {
+        if (!ApiEnv.isInInteractiveContext)
+            return;
+
         // ------------------------
         // Install/update simulator
         // ------------------------
