@@ -21,7 +21,7 @@ let inline shaderGenerative
             for y in 0.0 .. ctx.height - 1.0 do
                 let newColor = shaderFunc { x = x; y = y }
                 use paint = Color.toSkiaPaint newColor
-                do ctx.canvas.DrawPoint(f32 x, f32 y, paint)
+                do ctx.skiaCanvas.DrawPoint(f32 x, f32 y, paint)
         (), State.none
 
 let inline shaderEffect
@@ -39,5 +39,5 @@ let inline shaderEffect
                     Color.argb(c.Alpha, c.Red, c.Green, c.Blue)
                 let newColor = shaderFunc { point = { x = x; y = y }; pxlColor = currColor }
                 use paint = Color.toSkiaPaint newColor
-                do ctx.canvas.DrawPoint(f32 x, f32 y, paint)
+                do ctx.skiaCanvas.DrawPoint(f32 x, f32 y, paint)
         (), State.none

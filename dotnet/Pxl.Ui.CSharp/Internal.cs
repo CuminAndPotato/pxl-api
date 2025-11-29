@@ -1,6 +1,7 @@
 ﻿namespace Pxl.Ui.CSharp.Internal;
 
 using Pxl;
+using SkiaSharp;
 
 public class DrawingFunctions(RenderCtx ctx)
 {
@@ -20,4 +21,10 @@ public class DrawingContext(RenderCtx ctx)
         _builder = builder;
         return builder;
     }
+}
+
+public static class SkiaExtensions
+{
+    public static SKPoint ToSkiaPoint(this (double x, double y) tuple) => new((float)tuple.x, (float)tuple.y);
+    public static (double x, double y) ToTuple(this SKPoint point) => (point.X, point.Y);
 }

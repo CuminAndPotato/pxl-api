@@ -10,7 +10,7 @@ public sealed class PointDrawOperation : IDirectDrawable
     {
         Stroke = new PaintProxy<PointDrawOperation>(this, () => new SKPaint
         {
-            Color = Colors.Lime,
+            Color = Color.Lime,
             StrokeWidth = 1,
             IsStroke = true,
             IsAntialias = true
@@ -27,7 +27,7 @@ public sealed class PointDrawOperation : IDirectDrawable
     {
         using var paint = Stroke.CreatePaint();
         if (paint != null)
-            ctx.Canvas.DrawPoint((float)X, (float)Y, paint);
+            ctx.SkiaCanvas.DrawPoint((float)X, (float)Y, paint);
     }
 }
 

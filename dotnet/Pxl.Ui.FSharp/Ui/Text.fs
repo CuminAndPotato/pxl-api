@@ -59,7 +59,7 @@ type text(text: string) =
     interface IDirectDrawable with
         member this.End(ctx: RenderCtx) =
             use paint = this.createPaint()
-            ctx.canvas.DrawText(
+            ctx.skiaCanvas.DrawText(
                 this._data.text,
                 f32 this._data.x,
                 f32 <| this._data.y + this._data.ascent + this._data.fontSize, // ascent is negative (!)

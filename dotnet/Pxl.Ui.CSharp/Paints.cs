@@ -2,6 +2,7 @@
 
 namespace Pxl.Ui.CSharp;
 
+using Pxl.Ui.CSharp.Internal;
 using SkiaSharp;
 
 /// <summary>
@@ -48,8 +49,8 @@ public static class PaintProxyExtensions
     /// </summary>
     public static TParent LinearGradient<TParent>(
         this PaintProxy<TParent> proxy,
-        SKPoint start,
-        SKPoint end,
+        (double x, double y) start,
+        (double x, double y) end,
         SKColor[] colors,
         float[]? positions = null,
         SKShaderTileMode tileMode = SKShaderTileMode.Clamp,
@@ -58,7 +59,7 @@ public static class PaintProxyExtensions
     {
         proxy.SetPaintFactory(() => new SKPaint
         {
-            Shader = SKShader.CreateLinearGradient(start, end, colors, positions, tileMode),
+            Shader = SKShader.CreateLinearGradient(start.ToSkiaPoint(), end.ToSkiaPoint(), colors, positions, tileMode),
             StrokeWidth = strokeWidth,
             IsAntialias = isAntialias
         });
@@ -70,7 +71,7 @@ public static class PaintProxyExtensions
     /// </summary>
     public static TParent RadialGradient<TParent>(
         this PaintProxy<TParent> proxy,
-        SKPoint center,
+        (double x, double y) center,
         float radius,
         SKColor[] colors,
         float[]? positions = null,
@@ -80,7 +81,7 @@ public static class PaintProxyExtensions
     {
         proxy.SetPaintFactory(() => new SKPaint
         {
-            Shader = SKShader.CreateRadialGradient(center, radius, colors, positions, tileMode),
+            Shader = SKShader.CreateRadialGradient(center.ToSkiaPoint(), radius, colors, positions, tileMode),
             StrokeWidth = strokeWidth,
             IsAntialias = isAntialias
         });
@@ -92,9 +93,9 @@ public static class PaintProxyExtensions
     /// </summary>
     public static TParent TwoPointConicalGradient<TParent>(
         this PaintProxy<TParent> proxy,
-        SKPoint startCenter,
+        (double x, double y) startCenter,
         float startRadius,
-        SKPoint endCenter,
+        (double x, double y) endCenter,
         float endRadius,
         SKColor[] colors,
         float[]? positions = null,
@@ -105,7 +106,7 @@ public static class PaintProxyExtensions
         proxy.SetPaintFactory(() => new SKPaint
         {
             Shader = SKShader.CreateTwoPointConicalGradient(
-                startCenter, startRadius, endCenter, endRadius, colors, positions, tileMode),
+                startCenter.ToSkiaPoint(), startRadius, endCenter.ToSkiaPoint(), endRadius, colors, positions, tileMode),
             StrokeWidth = strokeWidth,
             IsAntialias = isAntialias
         });
@@ -117,7 +118,7 @@ public static class PaintProxyExtensions
     /// </summary>
     public static TParent SweepGradient<TParent>(
         this PaintProxy<TParent> proxy,
-        SKPoint center,
+        (double x, double y) center,
         SKColor[] colors,
         float[]? positions = null,
         SKMatrix? localMatrix = null,
@@ -127,8 +128,8 @@ public static class PaintProxyExtensions
         proxy.SetPaintFactory(() => new SKPaint
         {
             Shader = localMatrix.HasValue
-                ? SKShader.CreateSweepGradient(center, colors, positions, localMatrix.Value)
-                : SKShader.CreateSweepGradient(center, colors, positions),
+                ? SKShader.CreateSweepGradient(center.ToSkiaPoint(), colors, positions, localMatrix.Value)
+                : SKShader.CreateSweepGradient(center.ToSkiaPoint(), colors, positions),
             StrokeWidth = strokeWidth,
             IsAntialias = isAntialias
         });
@@ -223,8 +224,8 @@ public static class PaintProxyExtensions
     public static TParent VerticalGradient<TParent>(this PaintProxy<TParent> proxy, float height, params SKColor[] colors)
     {
         return proxy.LinearGradient(
-            new SKPoint(0, 0),
-            new SKPoint(0, height),
+            (0, 0),
+            (0, height),
             colors
         );
     }
@@ -235,8 +236,8 @@ public static class PaintProxyExtensions
     public static TParent HorizontalGradient<TParent>(this PaintProxy<TParent> proxy, float width, params SKColor[] colors)
     {
         return proxy.LinearGradient(
-            new SKPoint(0, 0),
-            new SKPoint(width, 0),
+            (0, 0),
+            (width, 0),
             colors
         );
     }

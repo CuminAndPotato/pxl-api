@@ -24,15 +24,6 @@
       "problemMatcher": ["$msCompile"]
     },
     {
-      "label": "PXL-API :: Publish Pxl.sln for local C# development",
-      "type": "shell",
-      "command": "./publish-pxl-sln-local.sh",
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      }
-    },
-    {
       "label": "PXL-API :: Start Simulator",
       "type": "shell",
       "command": "./start-simulator.sh",

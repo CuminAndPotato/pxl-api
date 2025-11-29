@@ -7,8 +7,14 @@ using SkiaSharp;
 /// <summary>
 /// Provides named SKColor constants for use with SkiaSharp drawing operations.
 /// </summary>
-public static class Colors
+public static class Color
 {
+    public static SKColor FromArgb(byte alpha, byte red, byte green, byte blue) => new(red, green, blue, alpha);
+    public static SKColor FromRgba(byte red, byte green, byte blue, byte alpha) => new(red, green, blue, alpha);
+    public static SKColor FromRgb(byte red, byte green, byte blue) => new(red, green, blue, 255);
+    public static SKColor FromHsl(float hue, float saturation, float lightness) => SKColor.FromHsl(hue, saturation, lightness);
+    public static SKColor FromHsv(float hue, float saturation, float value) => SKColor.FromHsv(hue, saturation, value);
+
     public static readonly SKColor TransparentBlack = new(0, 0, 0, 0);
     public static readonly SKColor TransparentWhite = new(255, 255, 255, 0);
 

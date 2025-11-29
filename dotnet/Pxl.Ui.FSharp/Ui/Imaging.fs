@@ -179,7 +179,7 @@ type DrawImage =
     static member inline image(frame: Frame, x, y) =
         scene {
             let! ctx = getCtx ()
-            do ctx.canvas.DrawBitmap(frame.bmp, f32 x, f32 y)
+            do ctx.skiaCanvas.DrawBitmap(frame.bmp, f32 x, f32 y)
         }
 
     static member inline image(frames: Frame list, x, y, ?repeat) =
@@ -208,7 +208,7 @@ type DrawImage =
                     else
                         currFrameInfo
             do currFrameState.value <- Some state
-            do ctx.canvas.DrawBitmap(state.frame.bmp, f32 x, f32 y)
+            do ctx.skiaCanvas.DrawBitmap(state.frame.bmp, f32 x, f32 y)
         }
 
     static member inline image(spriteMap: SpriteMap, x, y, ?repeat) =

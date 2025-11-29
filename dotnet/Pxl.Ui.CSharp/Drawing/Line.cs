@@ -12,7 +12,7 @@ public sealed class LineDrawOperation : IDirectDrawable
     {
         Stroke = new PaintProxy<LineDrawOperation>(this, () => new SKPaint
         {
-            Color = Colors.Lime,
+            Color = Color.Lime,
             StrokeWidth = 1,
             IsStroke = true,
             IsAntialias = true
@@ -31,7 +31,7 @@ public sealed class LineDrawOperation : IDirectDrawable
     {
         using var paint = Stroke.CreatePaint();
         if (paint != null)
-            ctx.Canvas.DrawLine((float)X1, (float)Y1, (float)X2, (float)Y2, paint);
+            ctx.SkiaCanvas.DrawLine((float)X1, (float)Y1, (float)X2, (float)Y2, paint);
     }
 }
 

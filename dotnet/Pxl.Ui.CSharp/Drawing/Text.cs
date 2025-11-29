@@ -12,7 +12,7 @@ public sealed class TextDrawOperation : IDirectDrawable
     {
         Brush = new PaintProxy<TextDrawOperation>(this, () => new SKPaint
         {
-            Color = Colors.White,
+            Color = Color.White,
             IsStroke = false,
             IsAntialias = false
         });
@@ -55,53 +55,113 @@ public sealed class TextDrawOperation : IDirectDrawable
         {
             // Y position includes ascent and font size (ascent is typically negative or 0)
             var drawY = (float)(Y + Font.DefaultAscent + Font.DefaultHeight);
-            ctx.Canvas.DrawText(Text, (float)X, drawY, font, paint);
+            ctx.SkiaCanvas.DrawText(Text, (float)X, drawY, font, paint);
         }
     }
 }
 
 public class TextProxy(RenderCtx ctx)
 {
-    public TextDrawOperation Font(string text, double x, double y, FontInfo font) =>
-        ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = font });
+    public TextDrawOperation Font(string text, double x, double y, FontInfo font, SKColor? color = null)
+    {
+        var op = ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = font });
+        if (color.HasValue)
+            op.Brush.Solid(color.Value);
+        return op;
+    }
 
-    public TextDrawOperation Var3x5(string text, string fontName, double x, double y) =>
-        ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Var3x5 });
+    public TextDrawOperation Var3x5(string text, string fontName, double x, double y, SKColor? color = null)
+    {
+        var op = ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Var3x5 });
+        if (color.HasValue)
+            op.Brush.Solid(color.Value);
+        return op;
+    }
 
-    public TextDrawOperation Var3x5(string text, double x, double y) =>
-        ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Var3x5 });
+    public TextDrawOperation Var3x5(string text, double x, double y, SKColor? color = null)
+    {
+        var op = ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Var3x5 });
+        if (color.HasValue)
+            op.Brush.Solid(color.Value);
+        return op;
+    }
 
-    public TextDrawOperation Mono3x5(string text, double x, double y) =>
-        ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Mono3x5 });
+    public TextDrawOperation Mono3x5(string text, double x, double y, SKColor? color = null)
+    {
+        var op = ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Mono3x5 });
+        if (color.HasValue)
+            op.Brush.Solid(color.Value);
+        return op;
+    }
 
-    public TextDrawOperation Var4x5(string text, double x, double y) =>
-        ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Var4x5 });
+    public TextDrawOperation Var4x5(string text, double x, double y, SKColor? color = null)
+    {
+        var op = ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Var4x5 });
+        if (color.HasValue)
+            op.Brush.Solid(color.Value);
+        return op;
+    }
 
-    public TextDrawOperation Mono4x5(string text, double x, double y) =>
-        ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Mono4x5 });
+    public TextDrawOperation Mono4x5(string text, double x, double y, SKColor? color = null)
+    {
+        var op = ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Mono4x5 });
+        if (color.HasValue)
+            op.Brush.Solid(color.Value);
+        return op;
+    }
 
-    public TextDrawOperation Mono6x6(string text, double x, double y) =>
-        ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Mono6x6 });
+    public TextDrawOperation Mono6x6(string text, double x, double y, SKColor? color = null)
+    {
+        var op = ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Mono6x6 });
+        if (color.HasValue)
+            op.Brush.Solid(color.Value);
+        return op;
+    }
 
-    public TextDrawOperation Mono7x10(string text, double x, double y) =>
-        ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Mono7x10 });
+    public TextDrawOperation Mono7x10(string text, double x, double y, SKColor? color = null)
+    {
+        var op = ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Mono7x10 });
+        if (color.HasValue)
+            op.Brush.Solid(color.Value);
+        return op;
+    }
 
-    public TextDrawOperation Var10x10(string text, double x, double y) =>
-        ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Var10x10 });
+    public TextDrawOperation Var10x10(string text, double x, double y, SKColor? color = null)
+    {
+        var op = ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Var10x10 });
+        if (color.HasValue)
+            op.Brush.Solid(color.Value);
+        return op;
+    }
 
-    public TextDrawOperation Mono10x10(string text, double x, double y) =>
-        ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Mono10x10 });
+    public TextDrawOperation Mono10x10(string text, double x, double y, SKColor? color = null)
+    {
+        var op = ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Mono10x10 });
+        if (color.HasValue)
+            op.Brush.Solid(color.Value);
+        return op;
+    }
 
-    public TextDrawOperation Mono16x16(string text, double x, double y) =>
-        ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Mono16x16 });
+    public TextDrawOperation Mono16x16(string text, double x, double y, SKColor? color = null)
+    {
+        var op = ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y, Font = Fonts.Mono16x16 });
+        if (color.HasValue)
+            op.Brush.Solid(color.Value);
+        return op;
+    }
 }
 
 public static class TextDrawOperationExtensions
 {
     public static TextProxy Text(this RenderCtx ctx) => new(ctx);
 
-    public static TextDrawOperation Text(this RenderCtx ctx, string text, double x, double y) =>
-        ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y });
+    public static TextDrawOperation Text(this RenderCtx ctx, string text, double x, double y, SKColor? color = null)
+    {
+        var op = ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y });
+        if (color.HasValue)
+            op.Brush.Solid(color.Value);
+        return op;
+    }
 
     public static TextDrawOperation Text(this TextDrawOperation op, string text)
     {

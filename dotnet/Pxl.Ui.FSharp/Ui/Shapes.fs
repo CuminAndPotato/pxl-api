@@ -18,7 +18,7 @@ type pxls =
             for y in 0.0 .. ctx.height - 1.0 do
                 for x in 0.0 .. ctx.width - 1.0 do
                     let idx = int (y * ctx.width + x)
-                    ctx.canvas.DrawPoint(f32 x, f32 y, Color.toSkiaPaint pxls[idx])
+                    ctx.skiaCanvas.DrawPoint(f32 x, f32 y, Color.toSkiaPaint pxls[idx])
             (), State.none
 
 
@@ -38,7 +38,7 @@ type pxl() =
     interface IDirectDrawable with
         member this.End(ctx: RenderCtx) =
             this.WithStroke <| fun paint ->
-                ctx.canvas.DrawPoint(this._xy.x, this._xy.y, paint)
+                ctx.skiaCanvas.DrawPoint(this._xy.x, this._xy.y, paint)
 
     member this.Run(_: Vide<_,_>) : Vide<_,_> =
         fun _ ctx ->
@@ -84,7 +84,7 @@ type rect() =
     interface IDirectDrawable with
         member this.End(ctx: RenderCtx) =
             this.WithStrokeFill <| fun paint ->
-                ctx.canvas.DrawRect(this._xy.x, this._xy.y, this._wh.w, this._wh.h, paint)
+                ctx.skiaCanvas.DrawRect(this._xy.x, this._xy.y, this._wh.w, this._wh.h, paint)
 
     member this.Run(_: Vide<_,_>) : Vide<_,_> =
         fun _ ctx ->
@@ -128,7 +128,7 @@ type line() =
     interface IDirectDrawable with
         member this.End(ctx: RenderCtx) =
             this.WithStroke <| fun paint ->
-                ctx.canvas.DrawLine(this._xy1.x, this._xy1.y, this._xy2.x, this._xy2.y, paint)
+                ctx.skiaCanvas.DrawLine(this._xy1.x, this._xy1.y, this._xy2.x, this._xy2.y, paint)
 
     member this.Run(_: Vide<_,_>) : Vide<_,_> =
         fun _ ctx ->
@@ -164,7 +164,7 @@ type circle() =
     interface IDirectDrawable with
         member this.End(ctx: RenderCtx) =
             this.WithStrokeFill <| fun paint ->
-                ctx.canvas.DrawCircle(this._xyr.x, this._xyr.y, this._xyr.r, paint)
+                ctx.skiaCanvas.DrawCircle(this._xyr.x, this._xyr.y, this._xyr.r, paint)
 
     member this.Run(_: Vide<_,_>) : Vide<_,_> =
         fun _ ctx ->
@@ -212,7 +212,7 @@ type oval() =
     interface IDirectDrawable with
         member this.End(ctx: RenderCtx) =
             this.WithStrokeFill <| fun paint ->
-                ctx.canvas.DrawOval(SKRect.Create(this._xy.x, this._xy.y, this._wh.w, this._wh.h), paint)
+                ctx.skiaCanvas.DrawOval(SKRect.Create(this._xy.x, this._xy.y, this._wh.w, this._wh.h), paint)
 
     member this.Run(_: Vide<_,_>) : Vide<_,_> =
         fun _ ctx ->
@@ -270,7 +270,7 @@ type arc() =
             this.WithStrokeFill <| fun paint ->
                 let w = this._wh.w
                 let h = this._wh.h
-                ctx.canvas.DrawArc(
+                ctx.skiaCanvas.DrawArc(
                     new SKRect(f32 this._xy.x, f32 this._xy.y, f32 (this._xy.x + w), f32 (this._xy.y + h)),
                     this._angles.start,
                     this._angles.arc,
@@ -304,7 +304,7 @@ type Polygon() =
             | Some f ->
                 do f path
                 this.WithStrokeFill <| fun paint ->
-                    ctx.canvas.DrawPath(path, paint)
+                    ctx.skiaCanvas.DrawPath(path, paint)
             | None -> ()
 
     member this.Run(_: Vide<_,_>) : Vide<_,_> =
@@ -330,7 +330,7 @@ type bg(color: Color) =
             // ctx.canvas.Clear(Color.toSkiaColor color)
 
             // ...so it's a "scene" BG now.
-            ctx.canvas.DrawRect(0f, 0f, f32 ctx.width, f32 ctx.height, Color.toSkiaPaint color)
+            ctx.skiaCanvas.DrawRect(0f, 0f, f32 ctx.width, f32 ctx.height, Color.toSkiaPaint color)
             (), State.none
 
     static member inline color(color) = bg(color)

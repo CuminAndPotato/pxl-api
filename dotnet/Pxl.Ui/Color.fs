@@ -8,9 +8,9 @@ open System.Runtime.CompilerServices
 [<StructLayout(LayoutKind.Sequential)>]
 type [<Struct>] Color =
     {
-        [<CompiledName("R")>] r: byte
-        [<CompiledName("G")>] g: byte
         [<CompiledName("B")>] b: byte
+        [<CompiledName("G")>] g: byte
+        [<CompiledName("R")>] r: byte
         [<CompiledName("A")>] a: byte
     }
 

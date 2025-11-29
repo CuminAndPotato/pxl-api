@@ -14,7 +14,7 @@ public sealed class RectDrawOperation : IDirectDrawable
 
         Fill = new PaintProxy<RectDrawOperation>(this, () => new SKPaint
         {
-            Color = Colors.TransparentBlack,
+            Color = Color.TransparentBlack,
             IsStroke = false,
             IsAntialias = true
         });
@@ -35,16 +35,23 @@ public sealed class RectDrawOperation : IDirectDrawable
 
         using var fillPaint = Fill.CreatePaint();
         if (fillPaint != null)
-            ctx.Canvas.DrawRect(rect, fillPaint);
+            ctx.SkiaCanvas.DrawRect(rect, fillPaint);
 
         using var strokePaint = Stroke.CreatePaint();
         if (strokePaint != null)
-            ctx.Canvas.DrawRect(rect, strokePaint);
+            ctx.SkiaCanvas.DrawRect(rect, strokePaint);
     }
 }
 
 public static class RectDrawOperationExtensions
 {
+    public static PaintProxy<RectDrawOperation> Background(this RenderCtx ctx)
+    {
+        return ctx
+            .BeginDirectDrawable(new RectDrawOperation { X = 0, Y = 0, Width = ctx.Width, Height = ctx.Height })
+            .Fill;
+    }
+
     public static RectDrawOperation RectXyWh(this RenderCtx ctx, double x, double y, double width, double height) =>
         ctx.BeginDirectDrawable(new RectDrawOperation { X = x, Y = y, Width = width, Height = height });
 

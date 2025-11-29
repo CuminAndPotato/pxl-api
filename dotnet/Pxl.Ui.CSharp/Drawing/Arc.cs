@@ -14,7 +14,7 @@ public sealed class ArcDrawOperation : IDirectDrawable
 
         Fill = new PaintProxy<ArcDrawOperation>(this, () => new SKPaint
         {
-            Color = Colors.TransparentBlack,
+            Color = Color.TransparentBlack,
             IsStroke = false,
             IsAntialias = true
         });
@@ -44,7 +44,7 @@ public sealed class ArcDrawOperation : IDirectDrawable
             path.MoveTo(centerX, centerY);
             path.ArcTo(rect, (float)StartAngle, (float)SweepAngle, false);
             path.Close();
-            ctx.Canvas.DrawPath(path, fillPaint);
+            ctx.SkiaCanvas.DrawPath(path, fillPaint);
         }
 
         using var strokePaint = Stroke.CreatePaint();
@@ -54,7 +54,7 @@ public sealed class ArcDrawOperation : IDirectDrawable
             path.MoveTo(centerX, centerY);
             path.ArcTo(rect, (float)StartAngle, (float)SweepAngle, false);
             path.Close();
-            ctx.Canvas.DrawPath(path, strokePaint);
+            ctx.SkiaCanvas.DrawPath(path, strokePaint);
         }
     }
 }

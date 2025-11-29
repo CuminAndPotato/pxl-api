@@ -165,12 +165,13 @@ module Vide =
     type VideBuilder() =
         inherit VideBaseBuilder()
         member inline _.Run([<InlineIfLambda>] f: unit -> Vide<_,_>) : Vide<_,_> =
-            fun s ctx ->
-                let saveCount = ctx.canvas.SaveLayer()
-                let v : Vide<_,_> = f ()
-                let res = v s ctx
-                do ctx.canvas.RestoreToCount(saveCount)
-                res
+            fun s ctx -> (f ()) s ctx
+            // fun s ctx ->
+            //     let saveCount = ctx.skiaCanvas.SaveLayer()
+            //     let v : Vide<_,_> = f ()
+            //     let res = v s ctx
+            //     do ctx.skiaCanvas.RestoreToCount(saveCount)
+            //     res
 
     type Mutable<'a when 'a: equality>(initial: 'a) =
         let mutable currVal = initial
