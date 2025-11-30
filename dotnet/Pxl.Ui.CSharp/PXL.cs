@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.FSharp.Core;
 
 namespace Pxl.Ui.CSharp;
 
@@ -10,9 +11,10 @@ namespace Pxl.Ui.CSharp;
 
 public static class PXL
 {
-    private const string SimulatorVersion = "0.0.13";
+    private const string SimulatorVersion = "0.0.14";
 
-    private static readonly string SimulatorUrl = $"http://127.0.0.1:{CanvasProxy.InvariantServicePorts.http}";
+    private static readonly string SimulatorUrl =
+        $"http://127.0.0.1:{CanvasProxy.invariantServicePorts.httpMetadata}";
 
     private static async Task<List<Process>> StartSimulator()
     {
@@ -73,7 +75,7 @@ public static class PXL
     }
 
     public static async Task Run(
-        string host,
+        string? deviceAddress,
         bool startSimulator,
         bool openSimulatorGuiInBrowser,
         Action myScene)
@@ -81,7 +83,7 @@ public static class PXL
         if (!ApiEnv.isInInteractiveContext)
             return;
 
-        List < Process > processes = new();
+        List<Process> processes = [];
 
         // Start simulator
         if (startSimulator)
@@ -98,8 +100,10 @@ public static class PXL
             });
         }
 
-        Simulator.startAction(
-            CanvasProxy.createWithDefaults(host),
+        Simulator.startActionSimple(
+            String.IsNullOrEmpty(deviceAddress) 
+                ? FSharpOption<string>.None 
+                : FSharpOption<string>.Some(deviceAddress),
             myScene);
 
         Console.WriteLine("Simulator started ...");

@@ -54,9 +54,11 @@ module Evaluation =
                         Array.zeroCreate<Color>(canvas.Metadata.width * canvas.Metadata.height)
                 ]
             let durationForOneFrame = 1.0 / float canvas.Metadata.fps
+
             let mutable sceneStartTime = reality.Now
             let mutable lastSceneState = None
             let mutable completeCycleCount = 0
+            
             let calcTimeForCycle cycleNr = sceneStartTime.AddSeconds(durationForOneFrame * float cycleNr)
             while isRunning () do
                 // when the diff between last eval time and now is > 1s, we reset the whole thing
@@ -88,7 +90,7 @@ module Evaluation =
                         do renderCtx.EndCycle(frame)
                         frame
                     do
-                        canvas.PushFrameSafe(frame)
+                        canvas.PushFrameSafe(0, frame)
                         completeCycleCount <- completeCycleCount + 1
                         reality.OnCycleFinished(calcTimeForCycle completeCycleCount)
                 with ex ->

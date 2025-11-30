@@ -65,6 +65,27 @@ let startAction (createCanvas: (unit -> unit) -> Canvas) (sceneFunc: System.Acti
     let scene = scene { do sceneFunc.Invoke() }
     do start createCanvas scene       
 
+let startActionSimple deviceAddress (sceneFunc: System.Action) =
+    let createCanvas =
+        CanvasProxy.create
+            (defaultArg deviceAddress "127.0.0.1")
+            false
+            CanvasProxy.invariantServicePorts.httpMetadata
+            CanvasProxy.defaultMetadataRoute
+            (
+                match deviceAddress with
+                | Some deviceAddress when
+                    not (String.IsNullOrWhiteSpace deviceAddress) 
+                    && deviceAddress.Trim() <> "127.0.0.1"
+                    && deviceAddress.Trim() <> "localhost" 
+                    ->
+                    CanvasProxy.invariantServicePorts.tcpFrames + 2
+                | _ ->
+                    CanvasProxy.invariantServicePorts.tcpFrames
+            )
+            None
+    startAction createCanvas sceneFunc
+
 let stop () =
     if ApiEnv.isInInteractiveContext
     then stopInternal.invoke()

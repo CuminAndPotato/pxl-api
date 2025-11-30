@@ -26,4 +26,7 @@ var scene = () =>
     }
 };
 
-await PXL.Run("localhost", true, true, scene);
+
+await PXL.Run(null, true, true, scene);
+// await PXL.Run("192.168.178.52", false, false, scene);
+

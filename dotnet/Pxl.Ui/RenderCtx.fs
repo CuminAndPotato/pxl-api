@@ -40,7 +40,7 @@ and [<Sealed>] RenderCtx
         width: int,
         height: int,
         fps: int,
-        ?onEndCycle: RenderCtx -> Color array -> unit
+        ?onEndCycle: Color array -> unit
     )
     =
 
@@ -142,5 +142,5 @@ and [<Sealed>] RenderCtx
 
     member internal this.EndCycle(dest: Color[]) =
         this.FlushAndCopy(dest)
-        onEndCycle |> Option.iter (fun f -> f this dest)
+        onEndCycle |> Option.iter (fun f -> f dest)
         ()

@@ -5,6 +5,12 @@ open Pxl
 open Pxl.Ui
 
 let start (receiver: string) videScene =
-    Simulator.start
-        (CanvasProxy.createWithDefaults receiver)
-        videScene
+    let createCanvas =
+        CanvasProxy.create
+            receiver
+            false
+            CanvasProxy.invariantServicePorts.httpMetadata
+            CanvasProxy.defaultMetadataRoute
+            CanvasProxy.invariantServicePorts.tcpFrames
+            None
+    Simulator.start createCanvas videScene

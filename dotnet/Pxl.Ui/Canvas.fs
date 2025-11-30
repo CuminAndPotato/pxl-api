@@ -34,7 +34,7 @@ type Canvas
 
     let onFrameReceivedEvent = new Event<Color[]>()
 
-    let mutable _mode = CanvasMode.On
+    let mutable _activeChannel = 0
 
     do
         bbq.Consume(
@@ -46,12 +46,13 @@ type Canvas
     [<CLIEvent>]
     member _.OnFrameReceived = onFrameReceivedEvent.Publish
 
-    member _.Mode with get() = _mode and set(v) = _mode <- v
+    member _.ActiveChannel
+        with get() = _activeChannel
+        and set(v) = _activeChannel <- v
     member _.Metadata = metadata
     member _.SendBufferSize = sendFrameBufferSize
-    member _.PushFrameSafe(pixels: Color[]) =
-        if _mode = CanvasMode.On then
-            // TODO: Safe - good?
+    member _.PushFrameSafe(channel, pixels: Color[]) =
+        if _activeChannel = channel then
             bbq.Push(pixels)
     member _.Ct = bbq.Cts.Token
 
@@ -78,10 +79,15 @@ module CanvasProxy =
     //   src/pxl-local-display/src/server.ts
     // --------------------------------------------------------------------------
 
-    let InvariantServicePorts =
+    let bpp = 3
+
+    let defaultSendBufferSize = 20
+    let defaultMetadataRoute = "metadata"
+
+    let invariantServicePorts =
         {|
-            http = 5001
-            tcp = 5002
+            httpMetadata = 5001
+            tcpFrames = 5002
         |}
 
     // TODO:
@@ -96,7 +102,7 @@ module CanvasProxy =
         [|
             while i < bytes.Length do
                 yield Color.rgb(bytes[i], bytes[i + 1], bytes[i + 2])
-                i <- i + 3
+                i <- i + bpp
         |]
 
     let frameColorsToBytes (colors: Color[]) =
@@ -107,10 +113,19 @@ module CanvasProxy =
                 byte c.b
         |]
 
-    let create remote sendBufferSize onEnd =
+    let create
+        remote 
+        useHttps 
+        httpMetadataPort 
+        httpMetadataRoute 
+        tcpFramesPort 
+        sendBufferSize 
+        onEnd 
+        =
         let clientMetadata =
+            let protocol = if useHttps then "https" else "http"
             http {
-                GET $"http://{remote}:{InvariantServicePorts.http}/metadata"
+                GET $"{protocol}://{remote}:{httpMetadataPort}/{httpMetadataRoute}"
                 config_timeoutInSeconds 3.0
             }
             |> Request.send
@@ -128,7 +143,7 @@ module CanvasProxy =
                     }
                 res
 
-        let client = new TcpClient(remote, InvariantServicePorts.tcp)
+        let client = new TcpClient(remote, tcpFramesPort)
         let stream = client.GetStream()
 
         let sendFrame (pixels: Color array) =
@@ -147,9 +162,11 @@ module CanvasProxy =
                     height = clientMetadata.height
                     fps = clientMetadata.fps
                 }
-            new Canvas(metadata, sendBufferSize, dispose)
-        // do canvas.RegisterSender(sendFrame, dispose)
+            new Canvas(
+                metadata, 
+                sendBufferSize |> Option.defaultValue defaultSendBufferSize, 
+                dispose
+                )
         do canvas.OnFrameReceived.Add(sendFrame)
         canvas
 
-    let createWithDefaults remote = create remote 20
