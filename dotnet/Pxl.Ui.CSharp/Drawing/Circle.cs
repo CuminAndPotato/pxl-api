@@ -14,7 +14,7 @@ public sealed class CircleDrawOperation : IDirectDrawable
 
         Fill = new PaintProxy<CircleDrawOperation>(this, () => new SKPaint
         {
-            Color = Color.Lime,
+            Color = Colors.Lime,
             IsStroke = false,
             IsAntialias = true
         });

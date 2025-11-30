@@ -14,7 +14,7 @@ public sealed class RectDrawOperation : IDirectDrawable
 
         Fill = new PaintProxy<RectDrawOperation>(this, () => new SKPaint
         {
-            Color = Color.TransparentBlack,
+            Color = Colors.TransparentBlack,
             IsStroke = false,
             IsAntialias = true
         });

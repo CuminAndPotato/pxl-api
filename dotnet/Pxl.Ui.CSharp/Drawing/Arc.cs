@@ -14,7 +14,7 @@ public sealed class ArcDrawOperation : IDirectDrawable
 
         Fill = new PaintProxy<ArcDrawOperation>(this, () => new SKPaint
         {
-            Color = Color.TransparentBlack,
+            Color = Colors.TransparentBlack,
             IsStroke = false,
             IsAntialias = true
         });

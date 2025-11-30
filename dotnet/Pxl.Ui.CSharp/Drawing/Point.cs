@@ -10,7 +10,7 @@ public sealed class PointDrawOperation : IDirectDrawable
     {
         Stroke = new PaintProxy<PointDrawOperation>(this, () => new SKPaint
         {
-            Color = Color.Lime,
+            Color = Colors.Lime,
             StrokeWidth = 1,
             IsStroke = true,
             IsAntialias = true

@@ -12,7 +12,7 @@ public sealed class LineDrawOperation : IDirectDrawable
     {
         Stroke = new PaintProxy<LineDrawOperation>(this, () => new SKPaint
         {
-            Color = Color.Lime,
+            Color = Colors.Lime,
             StrokeWidth = 1,
             IsStroke = true,
             IsAntialias = true

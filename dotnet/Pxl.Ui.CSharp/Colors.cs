@@ -12,9 +12,12 @@ public static class Color
     public static SKColor FromArgb(byte alpha, byte red, byte green, byte blue) => new(red, green, blue, alpha);
     public static SKColor FromRgba(byte red, byte green, byte blue, byte alpha) => new(red, green, blue, alpha);
     public static SKColor FromRgb(byte red, byte green, byte blue) => new(red, green, blue, 255);
-    public static SKColor FromHsl(float hue, float saturation, float lightness) => SKColor.FromHsl(hue, saturation, lightness);
-    public static SKColor FromHsv(float hue, float saturation, float value) => SKColor.FromHsv(hue, saturation, value);
+    public static SKColor FromHsl(double hue, double saturation, double lightness) => SKColor.FromHsl((float)hue, (float)saturation, (float)lightness);
+    public static SKColor FromHsv(double hue, double saturation, double value) => SKColor.FromHsv((float)hue, (float)saturation, (float)value);
+}
 
+public static class Colors
+{
     public static readonly SKColor TransparentBlack = new(0, 0, 0, 0);
     public static readonly SKColor TransparentWhite = new(255, 255, 255, 0);
 

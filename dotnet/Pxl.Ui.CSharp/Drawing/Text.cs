@@ -12,7 +12,7 @@ public sealed class TextDrawOperation : IDirectDrawable
     {
         Brush = new PaintProxy<TextDrawOperation>(this, () => new SKPaint
         {
-            Color = Color.White,
+            Color = Colors.White,
             IsStroke = false,
             IsAntialias = false
         });
