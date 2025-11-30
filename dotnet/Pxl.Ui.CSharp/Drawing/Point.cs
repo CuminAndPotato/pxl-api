@@ -33,8 +33,8 @@ public sealed class PointDrawOperation : IDirectDrawable
 
 public static class PointDrawOperationExtensions
 {
-    public static PointDrawOperation Point(this RenderCtx ctx, double x, double y) =>
-        ctx.BeginDirectDrawable(new PointDrawOperation { X = x, Y = y });
+    public static PointDrawOperation Point(this DrawingContext ctx, double x, double y) =>
+        ctx.RenderCtx.BeginDirectDrawable(new PointDrawOperation { X = x, Y = y });
 
     public static PointDrawOperation X(this PointDrawOperation op, double x)
     {

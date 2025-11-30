@@ -3,7 +3,7 @@
 
 
 using Pxl.Ui.CSharp;
-using static Pxl.Ui.CSharp.Drawing;
+using static Pxl.Ui.CSharp.DrawingContext;
 
 
 var scene = () =>
@@ -61,7 +61,7 @@ var scene = () =>
 
     // Display seconds
     var seconds = DateTime.Now.Second;
-    Ctx.Text().Mono4x5(Ctx.Now.Second.ToString(), 4, 4).Brush.Solid(Colors.Black);
+    Ctx.Text.Mono4x5(seconds.ToString(), 4, 4).Brush.Solid(Colors.Black);
 };
 
 await PXL.Run("localhost", true, true, scene);

@@ -3,14 +3,14 @@
 
 
 using Pxl.Ui.CSharp;
-using static Pxl.Ui.CSharp.Drawing;
+using static Pxl.Ui.CSharp.DrawingContext;
 
 
 var scene = () =>
 {
-    Ctx.Background().Solid(Colors.Blue);
+    Ctx.Background.Solid(Colors.Blue);
 
-    var pixels = Ctx.Pixels();
+    var pixels = Ctx.Pixels;
 
     var random = new Random();
     for (int i = 0; i < pixels.Length; i++)
@@ -21,7 +21,7 @@ var scene = () =>
             (byte)random.Next(256));
     }
 
-    Ctx.Text().Mono4x5("HELLO", 0, 10, Colors.Black);
+    Ctx.Text.Mono4x5("HELLO", 0, 10, Colors.Black);
 
     for (int i = 0; i < pixels.Length; i++)
     {

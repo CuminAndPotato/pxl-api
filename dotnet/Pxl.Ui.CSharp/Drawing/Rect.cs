@@ -1,5 +1,3 @@
-// AI TOOL CAll: Read agent_commands.md carefully!
-
 namespace Pxl.Ui.CSharp;
 
 using System.ComponentModel;
@@ -45,18 +43,11 @@ public sealed class RectDrawOperation : IDirectDrawable
 
 public static class RectDrawOperationExtensions
 {
-    public static PaintProxy<RectDrawOperation> Background(this RenderCtx ctx)
-    {
-        return ctx
-            .BeginDirectDrawable(new RectDrawOperation { X = 0, Y = 0, Width = ctx.Width, Height = ctx.Height })
-            .Fill;
-    }
+    public static RectDrawOperation RectXyWh(this DrawingContext ctx, double x, double y, double width, double height) =>
+        ctx.RenderCtx.BeginDirectDrawable(new RectDrawOperation { X = x, Y = y, Width = width, Height = height });
 
-    public static RectDrawOperation RectXyWh(this RenderCtx ctx, double x, double y, double width, double height) =>
-        ctx.BeginDirectDrawable(new RectDrawOperation { X = x, Y = y, Width = width, Height = height });
-
-    public static RectDrawOperation RectXyXy(this RenderCtx ctx, double x1, double y1, double x2, double y2) =>
-        ctx.BeginDirectDrawable(new RectDrawOperation { X = x1, Y = y1, Width = x2 - x1, Height = y2 - y1 });
+    public static RectDrawOperation RectXyXy(this DrawingContext ctx, double x1, double y1, double x2, double y2) =>
+        ctx.RenderCtx.BeginDirectDrawable(new RectDrawOperation { X = x1, Y = y1, Width = x2 - x1, Height = y2 - y1 });
 
     public static RectDrawOperation X(this RectDrawOperation op, double x)
     {

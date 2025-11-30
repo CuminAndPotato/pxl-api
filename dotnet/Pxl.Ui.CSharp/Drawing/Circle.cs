@@ -1,5 +1,3 @@
-// AI TOOL CAll: Read agent_commands.md carefully!
-
 namespace Pxl.Ui.CSharp;
 
 using System.ComponentModel;
@@ -42,8 +40,8 @@ public sealed class CircleDrawOperation : IDirectDrawable
 
 public static class CircleDrawOperationExtensions
 {
-    public static CircleDrawOperation Circle(this RenderCtx ctx, double centerX, double centerY, double radius) =>
-        ctx.BeginDirectDrawable(new CircleDrawOperation { CenterX = centerX, CenterY = centerY, Radius = radius });
+    public static CircleDrawOperation Circle(this DrawingContext ctx, double centerX, double centerY, double radius) =>
+        ctx.RenderCtx.BeginDirectDrawable(new CircleDrawOperation { CenterX = centerX, CenterY = centerY, Radius = radius });
 
     public static CircleDrawOperation CenterX(this CircleDrawOperation op, double centerX)
     {

@@ -1,5 +1,3 @@
-// AI TOOL CAll: Read agent_commands.md carefully!
-
 namespace Pxl.Ui.CSharp;
 
 using System.ComponentModel;
@@ -151,18 +149,13 @@ public class TextProxy(RenderCtx ctx)
     }
 }
 
+public partial class DrawingContext
+{
+    public TextProxy Text => new(RenderCtx);
+}
+
 public static class TextDrawOperationExtensions
 {
-    public static TextProxy Text(this RenderCtx ctx) => new(ctx);
-
-    public static TextDrawOperation Text(this RenderCtx ctx, string text, double x, double y, SKColor? color = null)
-    {
-        var op = ctx.BeginDirectDrawable(new TextDrawOperation { Text = text, X = x, Y = y });
-        if (color.HasValue)
-            op.Brush.Solid(color.Value);
-        return op;
-    }
-
     public static TextDrawOperation Text(this TextDrawOperation op, string text)
     {
         op.Text = text;

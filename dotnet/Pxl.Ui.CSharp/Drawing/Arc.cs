@@ -1,5 +1,3 @@
-// AI TOOL CAll: Read agent_commands.md carefully!
-
 namespace Pxl.Ui.CSharp;
 
 using System.ComponentModel;
@@ -61,11 +59,11 @@ public sealed class ArcDrawOperation : IDirectDrawable
 
 public static class ArcDrawOperationExtensions
 {
-    public static ArcDrawOperation Arc(this RenderCtx ctx, double x, double y, double width, double height, double startAngle, double sweepAngle) =>
-        ctx.BeginDirectDrawable(new ArcDrawOperation { X = x, Y = y, Width = width, Height = height, StartAngle = startAngle, SweepAngle = sweepAngle });
+    public static ArcDrawOperation Arc(this DrawingContext ctx, double x, double y, double width, double height, double startAngle, double sweepAngle) =>
+        ctx.RenderCtx.BeginDirectDrawable(new ArcDrawOperation { X = x, Y = y, Width = width, Height = height, StartAngle = startAngle, SweepAngle = sweepAngle });
 
-    public static ArcDrawOperation ArcCenter(this RenderCtx ctx, double centerX, double centerY, double radius, double startAngle, double sweepAngle) =>
-        ctx.BeginDirectDrawable(new ArcDrawOperation
+    public static ArcDrawOperation ArcCenter(this DrawingContext ctx, double centerX, double centerY, double radius, double startAngle, double sweepAngle) =>
+        ctx.RenderCtx.BeginDirectDrawable(new ArcDrawOperation
         {
             X = centerX - radius,
             Y = centerY - radius,

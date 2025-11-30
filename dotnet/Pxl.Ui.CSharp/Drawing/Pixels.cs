@@ -82,7 +82,7 @@ public sealed class PixelsDrawOperation : IDirectDrawable
     }
 }
 
-public static class PixelsDrawOperationExtensions
+public partial class DrawingContext
 {
-    public static PixelsAccess Pixels(this RenderCtx ctx) => new(ctx);
+    public PixelsAccess Pixels => new(RenderCtx);
 }

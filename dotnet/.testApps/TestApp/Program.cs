@@ -1,29 +1,27 @@
 ﻿using Pxl.Ui.CSharp;
-using static Pxl.Ui.CSharp.Drawing;
+using static Pxl.Ui.CSharp.DrawingContext;
 
 var scene = () =>
 {
-    Ctx.Background().Solid(Colors.Blue);
-
-    var pixels = Ctx.Pixels();
+    Ctx.Background.Solid(Colors.Blue);
 
     var random = new Random();
-    for (int i = 0; i < pixels.Length; i++)
+    for (int i = 0; i < Ctx.Pixels.Length; i++)
     {
-        pixels[i] = Color.FromRgb(
+        Ctx.Pixels[i] = Color.FromRgb(
             (byte)random.Next(256),
             (byte)random.Next(256),
             (byte)random.Next(256));
     }
 
-    Ctx.Text().Mono4x5("HELLO", 0, 10, Colors.Black);
+    Ctx.Text.Mono4x5("HELLO", 0, 10, Colors.Black);
 
-    for (int i = 0; i < pixels.Length; i++)
+    for (int i = 0; i < Ctx.Pixels.Length; i++)
     {
-        var color = pixels[i];
+        var color = Ctx.Pixels[i];
         if (color.Red == 0 && color.Green == 0 && color.Blue == 0)
         {
-            pixels[i] = Colors.Blue;
+            Ctx.Pixels[i] = Colors.Blue;
         }
     }
 };

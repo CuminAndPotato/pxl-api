@@ -1,6 +1,4 @@
-﻿// AI TOOL CAll: Read agent_commands.md carefully!
-
-namespace Pxl.Ui.CSharp;
+﻿namespace Pxl.Ui.CSharp;
 
 using System.ComponentModel;
 using Pxl;
@@ -37,8 +35,8 @@ public sealed class LineDrawOperation : IDirectDrawable
 
 public static class LineDrawOperationExtensions
 {
-    public static LineDrawOperation Line(this RenderCtx ctx, double x1, double y1, double x2, double y2) =>
-        ctx.BeginDirectDrawable(new LineDrawOperation { X1 = x1, Y1 = y1, X2 = x2, Y2 = y2 });
+    public static LineDrawOperation Line(this DrawingContext ctx, double x1, double y1, double x2, double y2) =>
+        ctx.RenderCtx.BeginDirectDrawable(new LineDrawOperation { X1 = x1, Y1 = y1, X2 = x2, Y2 = y2 });
 
     public static LineDrawOperation X1(this LineDrawOperation op, double x1)
     {
