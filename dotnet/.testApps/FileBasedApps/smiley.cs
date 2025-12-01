@@ -64,4 +64,4 @@ var scene = () =>
     Ctx.Text.Mono4x5(seconds.ToString(), 4, 4).Brush.Solid(Colors.Black);
 };
 
-await PXL.Run("localhost", true, true, scene);
+await PXL.Simulate(scene);

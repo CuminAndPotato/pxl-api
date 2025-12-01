@@ -75,10 +75,11 @@ public static class PXL
     }
 
     public static async Task Run(
-        string? deviceAddress,
-        bool startSimulator,
-        bool openSimulatorGuiInBrowser,
-        Action myScene)
+        Action myScene,
+        string? deviceAddress = null,
+        bool? startSimulator = null,
+        bool? openSimulatorGuiInBrowser = null
+        )
     {
         if (!ApiEnv.isInInteractiveContext)
             return;
@@ -86,11 +87,11 @@ public static class PXL
         List<Process> processes = [];
 
         // Start simulator
-        if (startSimulator)
+        if (startSimulator ?? false)
             processes.AddRange(await StartSimulator());
 
         // Open browser
-        if (openSimulatorGuiInBrowser)
+        if (openSimulatorGuiInBrowser ?? false)
         {
             Process.Start(new ProcessStartInfo
             {
@@ -101,8 +102,8 @@ public static class PXL
         }
 
         Simulator.startActionSimple(
-            String.IsNullOrEmpty(deviceAddress) 
-                ? FSharpOption<string>.None 
+            String.IsNullOrEmpty(deviceAddress)
+                ? FSharpOption<string>.None
                 : FSharpOption<string>.Some(deviceAddress),
             myScene);
 
@@ -149,5 +150,22 @@ public static class PXL
                 }
             }
         }
+    }
+
+    public static async Task Simulate(
+        Action myScene,
+        bool? startSimulator = null,
+        bool? openSimulatorGuiInBrowser = null
+        )
+    {
+        await Run(myScene, null, startSimulator, openSimulatorGuiInBrowser);
+    }
+
+    public static async Task SendToDevice(
+        Action myScene,
+        string deviceAddress
+        )
+    {
+        await Run(myScene, deviceAddress, false, false);
     }
 }
