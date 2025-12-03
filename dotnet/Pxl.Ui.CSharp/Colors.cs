@@ -1,5 +1,3 @@
-// AI TOOL CALL: Read agent_commands.md carefully!
-
 namespace Pxl.Ui.CSharp;
 
 using SkiaSharp;

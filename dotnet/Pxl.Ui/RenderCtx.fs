@@ -35,7 +35,7 @@ and DrawEntry(ctx: RenderCtx) =
 and RenderCtxInstances =
     static member val internal RenderContexts = Dictionary<int, RenderCtx>()
 
-and [<Sealed>] RenderCtx
+and RenderCtx
     (
         width: int,
         height: int,
@@ -119,7 +119,7 @@ and [<Sealed>] RenderCtx
 
         _currentDirectDrawable <- None
 
-    member private this.Flush() =
+    member internal this.Flush() =
         do this.EndDirectDrawable()
         
         do _skCanvas.Flush()
@@ -127,16 +127,18 @@ and [<Sealed>] RenderCtx
         let couldRead = _skSurface.ReadPixels(_skImageInfo, _skBmp.GetPixels(), _skImageInfo.RowBytes, 0, 0)
         if couldRead |> not then
             failwith "Failed to read pixels from SKSurface"
-
+    
+    member internal this.FlushAndGetPixelSpan() =
+        this.Flush()
         // we know that the struct layout of SkColor in our case: see above
         _skBmp.GetPixelSpan()
-    
+
     member internal this.FlushAndCopy(dest: Color[]) =
-        let srcPixelxSpan = this.Flush()
+        let srcPixelxSpan = this.FlushAndGetPixelSpan()
         MemoryMarshal.Cast<byte, Color>(srcPixelxSpan).CopyTo(dest)
 
     member internal this.FlushAndCopy(dest: SKColor[]) =
-        let srcPixelxSpan = this.Flush()
+        let srcPixelxSpan = this.FlushAndGetPixelSpan()
         MemoryMarshal.Cast<byte, SKColor>(srcPixelxSpan).CopyTo(dest)
         ()
 

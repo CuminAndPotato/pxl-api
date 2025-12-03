@@ -21,7 +21,7 @@ var scene = () =>
             (byte)random.Next(256));
     }
 
-    Ctx.Text.Mono4x5("HELLO", 0, 10, Colors.Black);
+    Ctx.Text.Mono4x5("HELLO", 0, 0, Colors.Black);
 
     for (int i = 0; i < pixels.Length; i++)
     {
@@ -29,7 +29,6 @@ var scene = () =>
         if (color.Red == 0 && color.Green == 0 && color.Blue == 0)
             pixels[i] = Colors.Blue;
     }
-    
 };
 
 await PXL.Simulate(scene);
