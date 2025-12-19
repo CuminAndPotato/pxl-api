@@ -14,5 +14,14 @@ public partial class DrawingContext
         RenderCtx = renderCtx ?? GetRenderCtx();
     }
 
-    public readonly RenderCtx RenderCtx;
+    internal readonly RenderCtx RenderCtx;
+
+    public double WidthF => RenderCtx.WidthF;
+    public double HeightF => RenderCtx.HeightF;
+    public int Width => RenderCtx.Width;
+    public int Height => RenderCtx.Height;
+    public DateTimeOffset Now => RenderCtx.Now;
+    public long CycleNo => RenderCtx.CycleNo;
+    public TimeSpan Elapsed => RenderCtx.Elapsed;
+    public int Fps => RenderCtx.Fps;
 }
