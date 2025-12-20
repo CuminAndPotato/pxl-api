@@ -10,8 +10,32 @@ public static class Color
     public static SKColor FromArgb(byte alpha, byte red, byte green, byte blue) => new(red, green, blue, alpha);
     public static SKColor FromRgba(byte red, byte green, byte blue, byte alpha) => new(red, green, blue, alpha);
     public static SKColor FromRgb(byte red, byte green, byte blue) => new(red, green, blue, 255);
-    public static SKColor FromHsl(double hue, double saturation, double lightness) => SKColor.FromHsl((float)hue, (float)saturation, (float)lightness);
-    public static SKColor FromHsv(double hue, double saturation, double value) => SKColor.FromHsv((float)hue, (float)saturation, (float)value);
+
+    /// <summary>Creates a color from HSL values where all components are in the range 0-1.</summary>
+    public static SKColor FromHsl(double hue, double saturation, double lightness) => 
+        SKColor.FromHsl((float)(hue * 360), (float)(saturation * 100), (float)(lightness * 100));
+    
+    /// <summary>Creates a color from HSL values where hue is 0-360 and saturation/lightness are 0-1.</summary>
+    public static SKColor FromHsl360(double hue, double saturation, double lightness) => 
+        SKColor.FromHsl((float)hue, (float)(saturation * 100), (float)(lightness * 100));
+    
+    /// <summary>Creates a color from HSV values where all components are in the range 0-1.</summary>
+    public static SKColor FromHsv(double hue, double saturation, double value) => 
+        SKColor.FromHsv((float)(hue * 360), (float)(saturation * 100), (float)(value * 100));
+    
+    /// <summary>Creates a color from HSV values where hue is 0-360 and saturation/value are 0-1.</summary>
+    public static SKColor FromHsv360(double hue, double saturation, double value) => 
+        SKColor.FromHsv((float)hue, (float)(saturation * 100), (float)(value * 100));
+}
+
+public static class ColorExtensions
+{
+    /// <summary>Returns a new SKColor with the specified alpha value in the range 0.0 to 1.0.</summary>
+    public static SKColor WithAlpha01(this SKColor color, double alpha)
+    {
+        byte a = (byte)(Math.Clamp(alpha, 0.0, 1.0) * 255);
+        return color.WithAlpha(a);
+    }
 }
 
 public static class Colors
