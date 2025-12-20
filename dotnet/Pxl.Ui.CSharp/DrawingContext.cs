@@ -1,5 +1,9 @@
 namespace Pxl.Ui.CSharp;
 
+/// <summary>
+/// This class is intended to be "using static"-ed to provide easy access to the current RenderCtx
+/// and to other basic idiomatic PXL functions.
+/// </summary>
 public partial class DrawingContext
 {
     private static RenderCtx GetRenderCtx() =>
@@ -7,11 +11,18 @@ public partial class DrawingContext
             ? ctx
             : throw new Exception($"No RenderCtx associated with the current thread (MTID {Environment.CurrentManagedThreadId}).");
 
-    public static DrawingContext Ctx => new();
-
     public DrawingContext(RenderCtx? renderCtx = null)
     {
         RenderCtx = renderCtx ?? GetRenderCtx();
+    }
+
+    public static DrawingContext Ctx => new();
+
+    public static IEnumerable<(int, int)> Grid(int size)
+    {
+        foreach (var x in Enumerable.Range(0, size))
+            foreach (var y in Enumerable.Range(0, size))
+                yield return (x, y);
     }
 
     internal readonly RenderCtx RenderCtx;
