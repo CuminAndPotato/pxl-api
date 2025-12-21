@@ -12,9 +12,10 @@ public static class PXL
     {
         if (!ApiEnv.isInInteractiveContext)
             return;
+        
         Simulator.startActionSimple(
             primaryDeviceAddress,
-            secondaryDeviceAddresses.ToList(),
+            secondaryDeviceAddresses,
             myScene);
 
         Console.WriteLine("Simulator started ...");
