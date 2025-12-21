@@ -135,15 +135,19 @@ module CanvasProxy =
             )
             connection <- None
 
-        let tryConnect () =
+        let rec tryConnectLoop () = task {
             try
                 let client, stream = createTcpClientAndStream remote tcpFramesPort
                 connection <- Some (client, stream)
+                printfn $"FaultTolerantSecondaryCanvasClient: Connected to {remote}:{tcpFramesPort}"
             with ex ->
                 printfn $"FaultTolerantSecondaryCanvasClient: Could not connect to {remote}:{tcpFramesPort}: {ex.Message}"
+                do! Threading.Tasks.Task.Delay(reconnectDelayMs, cts.Token)
+                do! tryConnectLoop ()
+        }
 
         let _ = task {
-            tryConnect ()
+            do! tryConnectLoop ()
             while not cts.Token.IsCancellationRequested do
                 try
                     do! signal.WaitAsync(cts.Token)
@@ -155,8 +159,7 @@ module CanvasProxy =
                 | ex ->
                     printfn $"FaultTolerantSecondaryCanvasClient: Send error to {remote}:{tcpFramesPort}: {ex.Message}"
                     disposeConnection ()
-                    do! Threading.Tasks.Task.Delay(reconnectDelayMs, cts.Token)
-                    tryConnect ()
+                    do! tryConnectLoop ()
         }
 
         member _.Write(bytes: byte[]) =
