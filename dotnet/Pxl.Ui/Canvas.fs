@@ -115,7 +115,7 @@ module CanvasProxy =
                 byte c.b
         |]
 
-    let createTcpClientAndStream (remote: string, tcpFramesPort: int) =
+    let createTcpClientAndStream remote tcpFramesPort =
         let client = new TcpClient(remote, tcpFramesPort)
         let stream = client.GetStream()
         client, stream
@@ -137,8 +137,8 @@ module CanvasProxy =
 
         let tryConnect () =
             try
-                let client = new TcpClient(remote, tcpFramesPort)
-                connection <- Some (client, client.GetStream())
+                let client, stream = createTcpClientAndStream remote tcpFramesPort
+                connection <- Some (client, stream)
             with ex ->
                 printfn $"FaultTolerantSecondaryCanvasClient: Could not connect to {remote}:{tcpFramesPort}: {ex.Message}"
 
@@ -202,11 +202,11 @@ module CanvasProxy =
                 res
 
         let primaryClient, primaryStream =
-            createTcpClientAndStream (remote, tcpFramesPort)
+            createTcpClientAndStream remote tcpFramesPort
 
         let secondaryClients =
-            [ 
-                for secondaryRemote in secondaryRemotes do
+            [
+                for secondaryRemote, tcpFramesPort in secondaryRemotes do
                     new FaultTolerantSecondaryCanvasClient(secondaryRemote, tcpFramesPort)
             ]
 
