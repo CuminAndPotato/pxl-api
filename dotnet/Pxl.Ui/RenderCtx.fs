@@ -35,7 +35,8 @@ and DrawEntry(ctx: RenderCtx) =
 and RenderCtxInstances =
     static member val internal RenderContexts = Dictionary<int, RenderCtx>()
 
-and RenderCtx
+// This class MUST be sealed in order to not get ValueRestriction errors in F# / Vide
+and [<Sealed>] RenderCtx
     (
         width: int,
         height: int,
