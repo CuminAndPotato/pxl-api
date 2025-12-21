@@ -115,6 +115,61 @@ module CanvasProxy =
                 byte c.b
         |]
 
+    let createTcpClientAndStream (remote: string, tcpFramesPort: int) =
+        let client = new TcpClient(remote, tcpFramesPort)
+        let stream = client.GetStream()
+        client, stream
+
+    type FaultTolerantSecondaryCanvasClient(remote: string, tcpFramesPort: int) =
+        let reconnectDelayMs = 2000
+
+        let mutable connection: (TcpClient * NetworkStream) option = None
+        let mutable currentBytes: byte[] = Array.empty
+        let cts = new Threading.CancellationTokenSource()
+        let signal = new Threading.SemaphoreSlim(0)
+
+        let disposeConnection () =
+            connection |> Option.iter (fun (client, stream) ->
+                try stream.Dispose() with _ -> ()
+                try client.Dispose() with _ -> ()
+            )
+            connection <- None
+
+        let tryConnect () =
+            try
+                let client = new TcpClient(remote, tcpFramesPort)
+                connection <- Some (client, client.GetStream())
+            with ex ->
+                printfn $"FaultTolerantSecondaryCanvasClient: Could not connect to {remote}:{tcpFramesPort}: {ex.Message}"
+
+        let _ = task {
+            tryConnect ()
+            while not cts.Token.IsCancellationRequested do
+                try
+                    do! signal.WaitAsync(cts.Token)
+                    match connection with
+                    | Some (_, stream) -> stream.Write(currentBytes, 0, currentBytes.Length)
+                    | None -> ()
+                with 
+                | :? OperationCanceledException -> ()
+                | ex ->
+                    printfn $"FaultTolerantSecondaryCanvasClient: Send error to {remote}:{tcpFramesPort}: {ex.Message}"
+                    disposeConnection ()
+                    do! Threading.Tasks.Task.Delay(reconnectDelayMs, cts.Token)
+                    tryConnect ()
+        }
+
+        member _.Write(bytes: byte[]) =
+            currentBytes <- bytes
+            signal.Release() |> ignore
+
+        interface IDisposable with
+            member _.Dispose() =
+                cts.Cancel()
+                disposeConnection ()
+                signal.Dispose()
+        
+
     let create
         remote
         useHttps
@@ -146,16 +201,14 @@ module CanvasProxy =
                     }
                 res
 
-        let createTcpClientAndStream (remote: string, tcpFramesPort: int) =
-            let client = new TcpClient(remote, tcpFramesPort)
-            let stream = client.GetStream()
-            client, stream
-
         let primaryClient, primaryStream =
             createTcpClientAndStream (remote, tcpFramesPort)
 
-        let secondaryClientsAndStreams =
-            secondaryRemotes |> List.map createTcpClientAndStream
+        let secondaryClients =
+            [ 
+                for secondaryRemote in secondaryRemotes do
+                    new FaultTolerantSecondaryCanvasClient(secondaryRemote, tcpFramesPort)
+            ]
 
         let sendFrame (pixels: Color array) =
             let bytes = frameColorsToBytes pixels
@@ -163,20 +216,14 @@ module CanvasProxy =
             // this shall fail and break through to the canvas / onEnd / restart logic
             do primaryStream.Write(bytes, 0, bytes.Length)
 
-            for _, stream in secondaryClientsAndStreams do
-                // TODO: This is not optimal - but ok since we know that the whole thing
-                // is only used during developing apps (currently).
-                Task.Run(fun () ->
-                    try stream.Write(bytes, 0, bytes.Length)
-                    with ex -> printfn $"Could not send frame to secondary display: {ex.Message}"
-                ) |> ignore
+            for client in secondaryClients do
+                client.Write(bytes)
 
         let dispose () =
             primaryStream.Dispose()
             primaryClient.Dispose()
-            for client, stream in secondaryClientsAndStreams do
-                stream.Dispose()
-                client.Dispose()
+            for client in secondaryClients do
+                (client :> IDisposable).Dispose()
             onEnd ()
 
         let canvas =
