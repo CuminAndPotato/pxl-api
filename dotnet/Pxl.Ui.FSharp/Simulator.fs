@@ -1,4 +1,7 @@
-[<RequireQualifiedAccess>]
+[<
+    RequireQualifiedAccess;
+    System.Obsolete("Use Pxl.Simulator module instead")
+>]
 module Pxl.Ui.FSharp.Simulator
 
 open Pxl
@@ -12,5 +15,6 @@ let start (receiver: string) videScene =
             CanvasProxy.invariantServicePorts.httpMetadata
             CanvasProxy.defaultMetadataRoute
             CanvasProxy.invariantServicePorts.tcpFrames
+            []
             None
     Simulator.start createCanvas videScene

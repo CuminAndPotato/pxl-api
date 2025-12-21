@@ -26,6 +26,8 @@ let start (createCanvas: (unit -> unit) -> Canvas) scene =
         let mutable retry = true
 
         let rec reStart () =
+            retry <- true
+            
             let onCanvasEnd () =
                 if retry then
                     let sleepTimeInMs = 2000
@@ -61,30 +63,31 @@ let start (createCanvas: (unit -> unit) -> Canvas) scene =
     else
         ()
 
-let startAction (createCanvas: (unit -> unit) -> Canvas) (sceneFunc: System.Action) =
-    let scene = scene { do sceneFunc.Invoke() }
-    do start createCanvas scene       
-
-let startActionSimple deviceAddress (sceneFunc: System.Action) =
+let startActionSimple primaryDeviceAddress secondaryDeviceAddresses (sceneFunc: System.Action) =
+    let getTcpFramesPort deviceAddress =
+        if
+            not (String.IsNullOrWhiteSpace deviceAddress) 
+            && deviceAddress.Trim() <> "127.0.0.1"
+            && deviceAddress.Trim() <> "localhost" 
+        then
+            CanvasProxy.invariantServicePorts.tcpFramesForDeviceInDevMode
+        else
+            CanvasProxy.invariantServicePorts.tcpFrames
+    let secondaryDeviceAddresses =
+        secondaryDeviceAddresses
+        |> Seq.toList
+        |> List.map (fun addr -> addr, getTcpFramesPort addr)
     let createCanvas =
         CanvasProxy.create
-            (defaultArg deviceAddress "127.0.0.1")
+            primaryDeviceAddress
             false
             CanvasProxy.invariantServicePorts.httpMetadata
             CanvasProxy.defaultMetadataRoute
-            (
-                match deviceAddress with
-                | Some deviceAddress when
-                    not (String.IsNullOrWhiteSpace deviceAddress) 
-                    && deviceAddress.Trim() <> "127.0.0.1"
-                    && deviceAddress.Trim() <> "localhost" 
-                    ->
-                    CanvasProxy.invariantServicePorts.tcpFrames + 2
-                | _ ->
-                    CanvasProxy.invariantServicePorts.tcpFrames
-            )
+            (getTcpFramesPort primaryDeviceAddress)
+            secondaryDeviceAddresses
             None
-    startAction createCanvas sceneFunc
+    let scene = scene { do sceneFunc.Invoke() }
+    do start createCanvas scene       
 
 let stop () =
     if ApiEnv.isInInteractiveContext

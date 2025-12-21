@@ -65,6 +65,7 @@ type Canvas
 module CanvasProxy =
 
     open System.Net.Sockets
+    open System.Threading.Tasks
     open FsHttp
     open Pxl
 
@@ -88,6 +89,7 @@ module CanvasProxy =
         {|
             httpMetadata = 5001
             tcpFrames = 5002
+            tcpFramesForDeviceInDevMode = 5004
         |}
 
     // TODO:
@@ -114,13 +116,14 @@ module CanvasProxy =
         |]
 
     let create
-        remote 
-        useHttps 
-        httpMetadataPort 
-        httpMetadataRoute 
-        tcpFramesPort 
-        sendBufferSize 
-        onEnd 
+        remote
+        useHttps
+        httpMetadataPort
+        httpMetadataRoute
+        tcpFramesPort
+        secondaryRemotes
+        sendBufferSize
+        onEnd
         =
         let clientMetadata =
             let protocol = if useHttps then "https" else "http"
@@ -143,16 +146,37 @@ module CanvasProxy =
                     }
                 res
 
-        let client = new TcpClient(remote, tcpFramesPort)
-        let stream = client.GetStream()
+        let createTcpClientAndStream (remote: string, tcpFramesPort: int) =
+            let client = new TcpClient(remote, tcpFramesPort)
+            let stream = client.GetStream()
+            client, stream
+
+        let primaryClient, primaryStream =
+            createTcpClientAndStream (remote, tcpFramesPort)
+
+        let secondaryClientsAndStreams =
+            secondaryRemotes |> List.map createTcpClientAndStream
 
         let sendFrame (pixels: Color array) =
             let bytes = frameColorsToBytes pixels
-            stream.Write(bytes, 0, bytes.Length)
+
+            // this shall fail and break through to the canvas / onEnd / restart logic
+            do primaryStream.Write(bytes, 0, bytes.Length)
+
+            for _, stream in secondaryClientsAndStreams do
+                // TODO: This is not optimal - but ok since we know that the whole thing
+                // is only used during developing apps (currently).
+                Task.Run(fun () ->
+                    try stream.Write(bytes, 0, bytes.Length)
+                    with ex -> printfn $"Could not send frame to secondary display: {ex.Message}"
+                ) |> ignore
 
         let dispose () =
-            stream.Dispose()
-            client.Dispose()
+            primaryStream.Dispose()
+            primaryClient.Dispose()
+            for client, stream in secondaryClientsAndStreams do
+                stream.Dispose()
+                client.Dispose()
             onEnd ()
 
         let canvas =

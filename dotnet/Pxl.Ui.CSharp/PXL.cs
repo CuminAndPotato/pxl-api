@@ -6,15 +6,15 @@ public static class PXL
 {
     private static async Task Run(
         Action myScene,
-        string? deviceAddress = null)
+        string primaryDeviceAddress,
+        params string[] secondaryDeviceAddresses
+        )
     {
         if (!ApiEnv.isInInteractiveContext)
             return;
-
         Simulator.startActionSimple(
-            string.IsNullOrEmpty(deviceAddress)
-                ? FSharpOption<string>.None
-                : FSharpOption<string>.Some(deviceAddress),
+            primaryDeviceAddress,
+            secondaryDeviceAddresses.ToList(),
             myScene);
 
         Console.WriteLine("Simulator started ...");
@@ -37,9 +37,14 @@ public static class PXL
         }
     }
 
+    const string SimulateAddress = "127.0.0.1";
+
     public static async Task Simulate(Action myScene) =>
-        await Run(myScene, null);
+        await Run(myScene, SimulateAddress);
 
     public static async Task SendToDevice(Action myScene, string deviceAddress) =>
         await Run(myScene, deviceAddress);
+
+    public static async Task SimulateAndSendToDevice(Action myScene, string deviceAddress) =>
+        await Run(myScene, SimulateAddress, deviceAddress);
 }
