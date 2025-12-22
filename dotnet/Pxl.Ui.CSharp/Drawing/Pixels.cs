@@ -6,12 +6,7 @@ using Microsoft.FSharp.Core;
 using Pxl;
 using SkiaSharp;
 
-public readonly record struct PixelCell
-{
-    public required int X { get; init; }
-    public required int Y { get; init; }
-    public required SKColor Color { get; init; }
-}
+public record PixelCell(int X, int Y, SKColor Color);
 
 public sealed class PixelsAccess
 {
@@ -74,14 +69,7 @@ public sealed class PixelsAccess
             for (int y = 0; y < _height; y++)
             {
                 for (int x = 0; x < _width; x++)
-                {
-                    yield return new PixelCell
-                    {
-                        X = x,
-                        Y = y,
-                        Color = pixels[y * _width + x]
-                    };
-                }
+                    yield return new PixelCell(x, y, pixels[y * _width + x]);
             }
         }
     }
@@ -128,7 +116,7 @@ public sealed class PixelsDrawOperation : IDirectDrawable
         Pixels = pixels;
     }
 
-    public BlendMode BlendMode { get; set; } = BlendMode.SourceOver;
+    public BlendMode BlendMode { get; set; } = BlendMode.Source;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void End(RenderCtx ctx)
@@ -213,8 +201,8 @@ public static class RenderCtxPixelsExtensions
     public static void SetPixels(
         this DrawingContext ctx,
         SKColor[] pixels,
-        SKBlendMode blendMode = SKBlendMode.SrcOver)
+        BlendMode blendMode = BlendMode.Source)
     {
-        ctx.RenderCtx.SetPixels(pixels, flushFirst: true, blendMode);
+        ctx.RenderCtx.SetPixels(pixels, flushFirst: true, (SKBlendMode)blendMode);
     }
 }
