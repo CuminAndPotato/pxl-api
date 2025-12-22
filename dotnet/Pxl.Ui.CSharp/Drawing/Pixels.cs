@@ -6,7 +6,7 @@ using Microsoft.FSharp.Core;
 using Pxl;
 using SkiaSharp;
 
-public record struct PixelCell
+public readonly record struct PixelCell
 {
     public required int X { get; init; }
     public required int Y { get; init; }
@@ -89,9 +89,9 @@ public sealed class PixelsAccess
 
 public static class RenderCtxExtensions
 {
-    public static RenderCtx Fork(this RenderCtx ctx, int width, int height, SKColor clearColor)
+    public static RenderCtx Fork(this RenderCtx ctx, SKColor clearColor)
     {
-        var forked = new RenderCtx(width, height, ctx.Fps, FSharpOption<FSharpFunc<Pxl.Color[], Unit>>.None)
+        var forked = new RenderCtx(ctx.Width, ctx.Height, ctx.Fps, FSharpOption<FSharpFunc<Pxl.Color[], Unit>>.None)
         {
             _buttons = ctx._buttons,
             _startTime = ctx._startTime,
@@ -101,12 +101,10 @@ public static class RenderCtxExtensions
         return forked;
     }
 
-    public static void ApplyPixels(
+    public static void SetPixels(
         this RenderCtx ctx,
         SKColor[] pixels,
         bool flushFirst,
-        double x,
-        double y,
         SKBlendMode blendMode)
     {
         if (flushFirst)
@@ -116,7 +114,7 @@ public static class RenderCtxExtensions
         byteSpan.CopyTo(ctx.SkiaBitmap.GetPixelSpan());
 
         using var paint = new SKPaint { BlendMode = blendMode };
-        ctx.SkiaCanvas.DrawBitmap(ctx.SkiaBitmap, (float)x, (float)y, paint);
+        ctx.SkiaCanvas.DrawBitmap(ctx.SkiaBitmap, 0, 0, paint);
         ctx.SkiaCanvas.Flush();
     }
 }
@@ -130,29 +128,12 @@ public sealed class PixelsDrawOperation : IDirectDrawable
         Pixels = pixels;
     }
 
-    public double X { get; set; } = 0;
-    public double Y { get; set; } = 0;
     public BlendMode BlendMode { get; set; } = BlendMode.SourceOver;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public void End(RenderCtx ctx)
     {
-        ctx.ApplyPixels(Pixels, false, X, Y, (SKBlendMode)BlendMode);
-    }
-}
-
-public static class PixelDrawOperationExtensions
-{
-    public static PixelsDrawOperation X(this PixelsDrawOperation op, double x)
-    {
-        op.X = x;
-        return op;
-    }
-
-    public static PixelsDrawOperation Y(this PixelsDrawOperation op, double y)
-    {
-        op.Y = y;
-        return op;
+        ctx.SetPixels(Pixels, false, (SKBlendMode)BlendMode);
     }
 }
 
@@ -173,11 +154,11 @@ public class ForkedDrawingContext : DrawingContext
         _forked = forked;
     }
 
-    public void Apply(double x, double y, SKBlendMode blendMode)
+    public void Apply(SKBlendMode blendMode)
     {
         var temp = new SKColor[_forked.Width * _forked.Height];
         _forked.FlushAndCopy(temp);
-        _parent.ApplyPixels(temp, true, x, y, blendMode);
+        _parent.SetPixels(temp, true, blendMode);
     }
 }
 
@@ -189,34 +170,25 @@ public static class RenderCtxPixelsExtensions
     /// The forked context has to be applied back to the parent context manually using Apply().
     /// </summary>
     public static ForkedDrawingContext Fork(
-        this DrawingContext ctx,
-        int? x = null,
-        int? y = null,
-        int? width = null,
-        int? height = null)
+        this DrawingContext ctx)
     {
-        var x0 = x ?? 0;
-        var y0 = y ?? 0;
-        var w = width ?? ctx.RenderCtx.Width;
-        var h = height ?? ctx.RenderCtx.Height;
-
-        var forked = ctx.RenderCtx.Fork(w, h, SKColors.Transparent);
+        var forked = ctx.RenderCtx.Fork(SKColors.Transparent);
 
         var parentPixels = new SKColor[ctx.RenderCtx.Width * ctx.RenderCtx.Height];
         ctx.RenderCtx.FlushAndCopy(parentPixels);
 
-        var forkedPixels = new SKColor[w * h];
-        for (var row = 0; row < h; row++)
+        var forkedPixels = new SKColor[forked.Width * forked.Height];
+        for (var row = 0; row < forked.Height; row++)
         {
             Array.Copy(
                 parentPixels,
-                (y0 + row) * ctx.RenderCtx.Width + x0,
+                row * ctx.RenderCtx.Width,
                 forkedPixels,
-                row * w,
-                w);
+                row * forked.Width,
+                forked.Width);
         }
 
-        forked.ApplyPixels(forkedPixels, false, 0, 0, SKBlendMode.Src);
+        forked.SetPixels(forkedPixels, false, SKBlendMode.Src);
 
         return new ForkedDrawingContext(ctx.RenderCtx, forked);
     }
@@ -228,14 +200,21 @@ public static class RenderCtxPixelsExtensions
     /// </summary>
     public static ForkedDrawingContext Spawn(
         this DrawingContext ctx,
-        int? width = null,
-        int? height = null,
         SKColor? clearColor = null)
     {
-        var forked = ctx.RenderCtx.Fork(
-            width ?? ctx.RenderCtx.Width,
-            height ?? ctx.RenderCtx.Height,
-            clearColor ?? SKColors.Black);
+        var forked = ctx.RenderCtx.Fork(clearColor ?? SKColors.Black);
         return new ForkedDrawingContext(ctx.RenderCtx, forked);
+    }
+
+    /// <summary>
+    /// Draws the given pixel array onto the canvas.
+    /// The array length must match Width * Height of the context.
+    /// </summary>
+    public static void SetPixels(
+        this DrawingContext ctx,
+        SKColor[] pixels,
+        SKBlendMode blendMode = SKBlendMode.SrcOver)
+    {
+        ctx.RenderCtx.SetPixels(pixels, flushFirst: true, blendMode);
     }
 }
