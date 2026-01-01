@@ -48,7 +48,9 @@ let start (createCanvas: (unit -> unit) -> Canvas) scene =
                         ),
                         Reality.forRealTime (),
                         (fun () -> { lowerButtonPressed = false; upperButtonPressed = false }),
-                        scene)
+                        scene,
+                        ignore
+                        )
                 stopInternal.setFunc (
                     fun () ->
                         retry <- false

@@ -37,7 +37,8 @@ module Evaluation =
             onEvalError: Exception -> unit,
             reality: Reality,
             readButtons: unit -> Buttons,
-            scene: Vide<unit,'s>
+            scene: Vide<unit,'s>,
+            onFrameRendered: Color[] -> unit
         ) =
         let hangDetectionTimeSpan = TimeSpan.FromSeconds(5.0)
 
@@ -48,11 +49,12 @@ module Evaluation =
 
         startedTimes <- startedTimes + 1
         fun () ->
-            let frameArrays =
-                [
-                    for i in 0 .. canvas.SendBufferSize - 1 do
-                        Array.zeroCreate<Color>(canvas.Metadata.width * canvas.Metadata.height)
-                ]
+            // this is basically an ArrayBuffer, but we don't use it for now
+            // let frameArrays =
+            //     [
+            //         for i in 0 .. canvas.SendBufferSize - 1 do
+            //             Array.zeroCreate<Color>(canvas.Metadata.width * canvas.Metadata.height)
+            //     ]
             let durationForOneFrame = 1.0 / float canvas.Metadata.fps
 
             let mutable sceneStartTime = reality.Now
@@ -86,13 +88,17 @@ module Evaluation =
                     let frame =
                         do renderCtx.PrepareCycle(sceneStartTime, frameNow, readButtons ())
                         do lastSceneState <- scene lastSceneState renderCtx |> snd
-                        let frame = frameArrays[completeCycleCount % frameArrays.Length]
+                        // let frame = frameArrays[completeCycleCount % frameArrays.Length]
+                        let frame = Array.zeroCreate<Color>(canvas.Metadata.width * canvas.Metadata.height)
                         do renderCtx.EndCycle(frame)
                         frame
                     do
                         canvas.PushFrameSafe(0, frame)
                         completeCycleCount <- completeCycleCount + 1
                         reality.OnCycleFinished(calcTimeForCycle completeCycleCount)
+                    do
+                        try onFrameRendered frame
+                        with _ -> ()
                 with ex ->
                     printfn $"Error in evaluation: {ex.Message}"
                     onEvalError ex
