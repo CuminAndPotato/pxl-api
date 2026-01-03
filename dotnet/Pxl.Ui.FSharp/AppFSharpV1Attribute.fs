@@ -2,6 +2,11 @@ namespace Pxl.Ui.FSharp
 
 open System
 
+type AppType =
+    | Clockface = 0
+    | Sequence = 1
+    | Debug = 2
+
 [<AttributeUsage(AttributeTargets.All, AllowMultiple = false)>]
 type AppFSharpV1Attribute(name: string) =
     inherit Attribute()
@@ -10,5 +15,4 @@ type AppFSharpV1Attribute(name: string) =
     member val displayName = "" with get, set
     member val author = "" with get, set
     member val description = "" with get, set
-    member val includeInCycle = true with get, set
-    member val isDebugApp = false with get, set
+    member val appType = AppType.Clockface with get, set
