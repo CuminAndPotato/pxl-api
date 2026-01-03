@@ -3,7 +3,7 @@ namespace Pxl.Ui.FSharp
 open System
 
 type AppType =
-    | Clockface = 0
+    | ClockFace = 0
     | Sequence = 1
     | Debug = 2
 
@@ -15,4 +15,4 @@ type AppFSharpV1Attribute(name: string) =
     member val displayName = "" with get, set
     member val author = "" with get, set
     member val description = "" with get, set
-    member val appType = AppType.Clockface with get, set
+    member val appType = AppType.ClockFace with get, set
