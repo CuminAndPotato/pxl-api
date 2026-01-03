@@ -79,7 +79,7 @@ public static class RenderCtxExtensions
 {
     public static RenderCtx Fork(this RenderCtx ctx, SKColor clearColor)
     {
-        var forked = new RenderCtx(ctx.Width, ctx.Height, ctx.Fps, FSharpOption<FSharpFunc<Pxl.Color[], Unit>>.None)
+        var forked = new RenderCtx(ctx.Width, ctx.Height, ctx.Fps, FSharpOption<FSharpFunc<Pxl.Color[], FSharpFunc<RenderCtx, Unit>>>.None)
         {
             _buttons = ctx._buttons,
             _startTime = ctx._startTime,
