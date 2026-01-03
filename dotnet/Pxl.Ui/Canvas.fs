@@ -65,7 +65,6 @@ type Canvas
 module CanvasProxy =
 
     open System.Net.Sockets
-    open System.Threading.Tasks
     open FsHttp
     open Pxl
 
